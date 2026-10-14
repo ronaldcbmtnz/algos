@@ -23,7 +23,7 @@ Los elementos vienen de un orden total y se comparan con $\le$ (modelo de compar
 | `tope()` | pila no vacía | devuelve el tope sin sacarlo |
 | `minimo()` | pila no vacía | devuelve el menor elemento de la pila |
 
-"$O(1)$ en el peor caso" quiere decir que **cada** llamada, por separado, cuesta una constante. No es un promedio ni un costo amortizado sobre una secuencia, que es lo que veremos en la C4.
+Que cueste $O(1)$ en el peor caso quiere decir que **cada** llamada, por separado, cuesta una constante. No es un promedio ni un costo amortizado sobre una secuencia, que es lo que veremos en la C4.
 
 ## 2. La estructura
 
@@ -50,7 +50,7 @@ class PilaMin:
 
 ![Traza de la pila](figuras/ejercicio-03-traza.png)
 
-*Figura 1. La pila después de cada operación. En negro, cada valor; en azul, el mínimo de su prefijo. Arriba, el mínimo correcto y el que da la versión compacta con $<$ de la sección 5, que se equivoca al desapilar el segundo 3.*
+**Figura 1.** La pila después de cada operación. En negro, cada valor; en azul, el mínimo de su prefijo. Arriba, el mínimo correcto y el que da la versión compacta con $<$ de la sección 5, que se equivoca al desapilar el segundo 3.
 
 ## 3. El invariante y la correctitud
 
@@ -128,11 +128,11 @@ La Figura 1 muestra lo mismo con 5, 7, 3, 3, 8: tras desapilar el 8 y un 3, la v
 
 ![Fallos de la versión con <](figuras/ejercicio-03-fallos.png)
 
-*Figura 2. El generador que casi todo el mundo escribe, valores al azar en un rango grande, no ve el error nunca. Hacen falta repeticiones, y el lema dice que son repeticiones del mínimo.*
+**Figura 2.** El generador que casi todo el mundo escribe, valores al azar en un rango grande, no ve el error nunca. Hacen falta repeticiones, y el lema dice que son repeticiones del mínimo.
 
 **Cuánta memoria ahorra.** Con $n$ valores distintos en orden aleatorio, la posición $k$ es un récord con probabilidad $1/k$: el menor de los primeros $k$ está con la misma probabilidad en cualquiera de ellos. Por linealidad, la cantidad esperada de récords es $H_n = 1 + \frac12 + \dots + \frac1n \approx \ln n$, y la memoria esperada es $n + H_n$. Es el mismo $H_n$ del ejercicio 10.
 
-| $n$ | récords medidos (media de 200) | $H_n$ | memoria $/\,n$ |
+| $n$ | récords medidos (media de 200) | $H_n$ | memoria $/\ n$ |
 |---|---|---|---|
 | 10 | 2,91 | 2,93 | 1,291 |
 | 100 | 5,38 | 5,19 | 1,054 |
@@ -149,11 +149,13 @@ Ninguna operación puede costar menos de una constante, así que la estructura e
 
 **Teorema 4.** Si una estructura de comparaciones permite `insertar` con $I(n)$ comparaciones y `extraer_minimo` con $E(n)$ comparaciones en el peor caso, entonces
 
-$$I(n) + E(n) \ge \log_2 n - 1{,}443.$$
+```math
+I(n) + E(n) \ge \log_2 n - 1{,}443.
+```
 
 En particular, no pueden ser las dos $O(1)$.
 
-*Demostración.* Insertar $n$ elementos y extraer el mínimo $n$ veces los ordena con $n\,(I(n) + E(n))$ comparaciones. Por la cota de la C5, §3, ordenar requiere $\log_2 n! \ge n\log_2 n - 1{,}443\,n$. Se divide entre $n$. $\blacksquare$
+*Demostración.* Insertar $n$ elementos y extraer el mínimo $n$ veces los ordena con $n\ (I(n) + E(n))$ comparaciones. Por la cota de la C5, §3, ordenar requiere $\log_2 n! \ge n\log_2 n - 1{,}443\ n$. Se divide entre $n$. $\blacksquare$
 
 Nuestra pila no lo contradice: `minimo` **consulta** el mínimo pero no lo saca, y `desapilar` saca el tope, que en general no es el mínimo. Un heap tiene `extraer_minimo` en $O(\log n)$, y el teorema dice que no se puede hacer mucho mejor.
 

@@ -40,7 +40,9 @@ def floyd(sig, inicio):
 - **(a) Sin ciclo.** Algún $x_n$ es `None`, y entonces $x_0, \dots, x_{n-1}$ son nodos distintos.
 - **(b) Con ciclo.** Ningún $x_i$ es `None`. Existen $\mu \ge 0$ y $\lambda \ge 1$ tales que $x_0, \dots, x_{\mu+\lambda-1}$ son distintos y, para $i < j$:
 
-$$x_i = x_j \iff i \ge \mu \ \text{ y }\ \lambda \mid (j - i).$$
+```math
+x_i = x_j \iff i \ge \mu \ \text{ y }\ \lambda \mid (j - i).
+```
 
 *Demostración.* Si algún nodo se repite, $x_i = x_j$ con $i < j$, entonces $x_{i+1} = x_{j+1}$, y así sucesivamente: la sucesión nunca llega a `None`. Así que en el caso (a) no hay repetidos.
 
@@ -51,7 +53,7 @@ Si nunca llega a `None`, como hay finitos nodos, alguno se repite. Sea $j$ el pr
 
 ![La ρ](figuras/ejercicio-05-rho.png)
 
-*Figura 1. Una lista con cola $\mu = 4$ y ciclo $\lambda = 7$. La tortuga y la liebre se encuentran en $t^\ast = 7$, el primer múltiplo de 7 que es al menos 4. La tortuga está en $x_7$ y la liebre en $x_{14}$, que es el mismo nodo porque $14 - 7 = 7$.*
+**Figura 1.** Una lista con cola $\mu = 4$ y ciclo $\lambda = 7$. La tortuga y la liebre se encuentran en $t^\ast = 7$, el primer múltiplo de 7 que es al menos 4. La tortuga está en $x_7$ y la liebre en $x_{14}$, que es el mismo nodo porque $14 - 7 = 7$.
 
 ## 2. El invariante y el "si y solo si"
 
@@ -66,7 +68,9 @@ Si nunca llega a `None`, como hay finitos nodos, alguno se repite. Sea $j$ el pr
 
 **Teorema 1.** El algoritmo responde "hay ciclo" si y solo si la lista tiene un ciclo. En ese caso el encuentro ocurre exactamente en la vuelta
 
-$$t^\ast = \lambda \cdot \max\!\left(1, \left\lceil \tfrac{\mu}{\lambda}\right\rceil\right) \;\le\; \mu + \lambda.$$
+```math
+t^\ast = \lambda \cdot \max\!\left(1, \left\lceil \tfrac{\mu}{\lambda}\right\rceil\right) \;\le\; \mu + \lambda.
+```
 
 *Demostración.*
 
@@ -93,7 +97,9 @@ Una traza con $\mu = 4$, $\lambda = 7$, la de la Figura 1:
 
 **Con ciclo (caso b).** Definimos
 
-$$\Phi_t = \begin{cases} (\mu - t) + \lambda & \text{si } t < \mu \quad\text{(la tortuga todavía está en la cola)},\\ r_t \in \lbrace 1, \dots, \lambda\rbrace,\ \ r_t \equiv -t \pmod\lambda & \text{si } t \ge \mu \quad\text{(las dos están en el ciclo)}.\end{cases}$$
+```math
+\Phi_t = \begin{cases} (\mu - t) + \lambda & \text{si } t < \mu \quad\text{(la tortuga todavía está en la cola)},\\ r_t \in \lbrace 1, \dots, \lambda\rbrace,\ \ r_t \equiv -t \pmod\lambda & \text{si } t \ge \mu \quad\text{(las dos están en el ciclo)}.\end{cases}
+```
 
 En la segunda fase, $r_t$ es la **distancia que la liebre tiene que recorrer para alcanzar a la tortuga**. La liebre está en $x_{2t}$, y avanzando $d$ nodos llega a $x_{2t+d}$, que es la tortuga $x_t$ cuando $2t + d \equiv t$, o sea $d \equiv -t \pmod\lambda$.
 
@@ -111,7 +117,7 @@ La observación clave está en el tercer caso: **la liebre no puede saltar por e
 
 ![El potencial](figuras/ejercicio-05-potencial.png)
 
-*Figura 2. $\Phi_t$ para cuatro listas. En la cola baja de a 1. Al entrar la tortuga al ciclo cae de golpe a la distancia real, y desde ahí baja de a 1 hasta el encuentro (punto en 0).*
+**Figura 2.** $\Phi_t$ para cuatro listas. En la cola baja de a 1. Al entrar la tortuga al ciclo cae de golpe a la distancia real, y desde ahí baja de a 1 hasta el encuentro (punto en 0).
 
 ## 4. Costo
 

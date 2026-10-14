@@ -5,16 +5,16 @@
 ## Respuesta
 
 - **La máquina.** Una cinta con el número en binario, el bit menos significativo en la celda 0 y los demás a su izquierda. El cabezal empieza y termina en la celda 0. Tiene 2 estados de trabajo y 5 transiciones.
-- **Un incremento de $k$ cuesta exactamente $2\,t(k) + 2$ pasos**, donde $t(k)$ es la cantidad de unos en que termina $k$. Va hacia la izquierda convirtiendo esos unos en ceros, escribe un 1 y vuelve. El peor de los $m$ primeros cuesta $2\lfloor\log_2 m\rfloor + 2 = \Theta(\log m)$.
+- **Un incremento de $k$ cuesta exactamente $2\ t(k) + 2$ pasos**, donde $t(k)$ es la cantidad de unos en que termina $k$. Va hacia la izquierda convirtiendo esos unos en ceros, escribe un 1 y vuelve. El peor de los $m$ primeros cuesta $2\lfloor\log_2 m\rfloor + 2 = \Theta(\log m)$.
 - **Potencial.** $\Phi = 2\cdot(\text{unos en la cinta})$. Cada incremento tiene costo amortizado **exactamente 4**: paga $2t + 2$ y el potencial baja $2(t - 1)$. Como $\Phi_0 = 0$ y $\Phi \ge 0$, $m$ incrementos cuestan a lo sumo $4m$.
-- **Exacto.** El total es $4m - 2\cdot\mathrm{popcount}(m)$, donde $\mathrm{popcount}(m)$ es la cantidad de unos de $m$ en binario. Comprobado simulando la máquina para cada $m \le 20\,000$, y en valores sueltos hasta $m = 10^5$.
+- **Exacto.** El total es $4m - 2\cdot\mathrm{popcount}(m)$, donde $\mathrm{popcount}(m)$ es la cantidad de unos de $m$ en binario. Comprobado simulando la máquina para cada $m \le 20\ 000$, y en valores sueltos hasta $m = 10^5$.
 - **El modelo importa.** Si el cabezal viviera en el bit **más** significativo, cada incremento costaría $\Theta(\log m)$ solo en ir y volver, y el total sería $\Theta(m\log m)$. El $O(m)$ depende de que el trabajo de cada incremento esté **pegado al cabezal**.
 
 ---
 
 ## 1. La máquina
 
-**Especificación** (ejercicio 7 de la C1). La cinta tiene un número en binario, con el bit menos significativo en la celda 0 y los más significativos en las celdas $-1, -2, \dots$; fuera del número hay blancos ($\_$). El cabezal empieza en la celda 0 en el estado `sumar`. Al terminar, la cinta tiene el número más 1 y el cabezal está otra vez en la celda 0, en el estado `fin`. El 0 se escribe como un solo `0` en la celda 0.
+**Especificación** (ejercicio 7 de la C1). La cinta tiene un número en binario, con el bit menos significativo en la celda 0 y los más significativos en las celdas $-1, -2, \dots$; fuera del número hay blancos (`_`). El cabezal empieza en la celda 0 en el estado `sumar`. Al terminar, la cinta tiene el número más 1 y el cabezal está otra vez en la celda 0, en el estado `fin`. El 0 se escribe como un solo `0` en la celda 0.
 
 | estado | lee | escribe | se mueve | pasa a | para qué |
 |---|---|---|---|---|---|
@@ -43,7 +43,7 @@ Son 8 pasos $= 2\cdot t(7) + 2$, con $t(7) = 3$.
 
 ## 2. El costo de un incremento
 
-**Lema 1.** Incrementar $k$ cuesta exactamente $2\,t(k) + 2$ pasos.
+**Lema 1.** Incrementar $k$ cuesta exactamente $2\ t(k) + 2$ pasos.
 
 *Demostración.* Se cuentan las transiciones:
 
@@ -62,13 +62,17 @@ En total, $2t(k) + 2$. $\blacksquare$
 
 *Demostración.* Un incremento de $k$ convierte $t = t(k)$ unos en ceros y un 0 (o un blanco) en 1. La cantidad de unos cambia en $1 - t$, así que $\Delta\Phi = 2(1 - t)$. Por el Lema 1,
 
-$$\hat c = (2t + 2) + 2(1 - t) = 4. \qquad\blacksquare$$
+```math
+\hat c = (2t + 2) + 2(1 - t) = 4. \qquad\blacksquare
+```
 
 **Corolario.** $m$ incrementos desde 0 cuestan exactamente $4m - 2\cdot\mathrm{popcount}(m) \le 4m$ pasos. Como cada incremento cuesta al menos 2, el total es $\Theta(m)$.
 
 *Demostración.* Sumando, el potencial se telescopia (C4, §2):
 
-$$\sum_{i=1}^m c_i = \sum_{i=1}^m \hat c_i - (\Phi_m - \Phi_0) = 4m - \Phi_m + \Phi_0.$$
+```math
+\sum_{i=1}^m c_i = \sum_{i=1}^m \hat c_i - (\Phi_m - \Phi_0) = 4m - \Phi_m + \Phi_0.
+```
 
 Al principio la cinta tiene un 0, así que $\Phi_0 = 0$. Al final tiene el número $m$, así que $\Phi_m = 2\cdot\mathrm{popcount}(m) \ge 0$. $\blacksquare$
 
@@ -79,15 +83,15 @@ Es la condición que la C4 pide cuidar: $\Phi_m \ge \Phi_0$. Acá se cumple con 
 **Los otros dos métodos de la C4 dan lo mismo.**
 
 - **Contabilidad.** Se cobran 4 por incremento. Con 2 se pagan los dos pasos propios: escribir el 1 y retroceder desde el blanco. Los otros 2 quedan pegados al 1 recién escrito. Cuando un incremento futuro lo convierte en 0, esas dos monedas pagan el paso de ida y el de vuelta sobre esa celda. El crédito nunca es negativo porque cada 1 tiene sus dos monedas, y la suma de los créditos es $\Phi$.
-- **Agregado.** Cada incremento cambia la cantidad de unos en $1 - t(k)$. Sumando de $k = 0$ a $m-1$, el total de cambios es $\mathrm{popcount}(m) - 0$, así que $\sum_k t(k) = m - \mathrm{popcount}(m)$. Entonces el total es $\sum_k (2t(k) + 2) = 4m - 2\,\mathrm{popcount}(m)$, el mismo número.
+- **Agregado.** Cada incremento cambia la cantidad de unos en $1 - t(k)$. Sumando de $k = 0$ a $m-1$, el total de cambios es $\mathrm{popcount}(m) - 0$, así que $\sum_k t(k) = m - \mathrm{popcount}(m)$. Entonces el total es $\sum_k (2t(k) + 2) = 4m - 2\ \mathrm{popcount}(m)$, el mismo número.
 
 ![Costo real, amortizado y potencial](figuras/ejercicio-04-costos.png)
 
-*Figura 1. Arriba, los pasos de cada uno de los 64 primeros incrementos, con picos en $2^j - 1 \to 2^j$, y el costo amortizado, plano en 4. Abajo, el potencial: sube 2 en cada incremento barato y se desploma en cada pico, justo lo que el pico costó de más. Es la Figura 1 de la C4, para el contador.*
+**Figura 1.** Arriba, los pasos de cada uno de los 64 primeros incrementos, con picos en $2^j - 1 \to 2^j$, y el costo amortizado, plano en 4. Abajo, el potencial: sube 2 en cada incremento barato y se desploma en cada pico, justo lo que el pico costó de más. Es la Figura 1 de la C4, para el contador.
 
 **Medido** con el simulador:
 
-| $m$ | total medido | $4m - 2\,\mathrm{popcount}(m)$ | $4m$ | total $/\,m$ | peor incremento | $2\lfloor\log_2 m\rfloor + 2$ |
+| $m$ | total medido | $4m - 2\ \mathrm{popcount}(m)$ | $4m$ | total $/\ m$ | peor incremento | $2\lfloor\log_2 m\rfloor + 2$ |
 |---|---|---|---|---|---|---|
 | 1 | 2 | 2 | 4 | 2,000 | 2 | 2 |
 | 16 | 62 | 62 | 64 | 3,875 | 10 | 10 |
@@ -101,7 +105,7 @@ Es la condición que la C4 pide cuidar: $\Phi_m \ge \Phi_0$. Acá se cumple con 
 El ejercicio 7 de la C1 preguntaba cuántos pasos da la máquina en el peor caso y cuántos en total con $m$ incrementos desde 0. Respuestas:
 
 - **El peor caso** de un incremento es $2b + 2$ con un número de $b$ bits todos en 1. Entre los $m$ primeros, $2\lfloor\log_2 m\rfloor + 2$.
-- **El total** es $4m - 2\,\mathrm{popcount}(m)$, o sea $\Theta(m)$, aunque una operación suelta cueste $\Theta(\log m)$.
+- **El total** es $4m - 2\ \mathrm{popcount}(m)$, o sea $\Theta(m)$, aunque una operación suelta cueste $\Theta(\log m)$.
 
 La pregunta tenía trampa en el modelo. En la máquina de Turing, acceder a una celda cuesta tanto como la distancia (C1, §3). Por eso los palíndromos cuestan $\Omega(n^2)$ en una cinta. Acá la máquina no se ve penalizada, porque cada celda que el cabezal visita es una celda que el incremento **tiene** que modificar, o su vecina. El camino es proporcional al trabajo, y el trabajo es $O(1)$ amortizado igual que en la RAM.
 
@@ -111,7 +115,7 @@ Si la especificación pusiera el cabezal en el bit **más** significativo, cada 
 
 ![Promedio por incremento según dónde vive el cabezal](figuras/ejercicio-04-cabezal.png)
 
-*Figura 2. Pasos por incremento, en promedio sobre $m$. Con el cabezal en el bit menos significativo el promedio tiende a 4. En el más significativo crece como $2\log_2 m$.*
+**Figura 2.** Pasos por incremento, en promedio sobre $m$. Con el cabezal en el bit menos significativo el promedio tiende a 4. En el más significativo crece como $2\log_2 m$.
 
 En términos de potencial, la variante no tiene arreglo. El viaje de ida y vuelta cuesta $\Theta(b)$ en **cada** incremento, aunque no haya ningún trabajo pendiente que lo justifique. Ninguna función del estado puede pagar un costo que se repite siempre igual. El potencial solo puede mover costo entre operaciones, no hacerlo desaparecer.
 
@@ -127,7 +131,7 @@ Lo mismo pasa si además de incrementar se permite **decrementar** (ejercicio 2 
 | `test_la_maquina_suma_uno_y_vuelve_a_casa` | valor, cabezal en la celda 0 y largo del número, para $k < 5000$ |
 | `test_costo_de_cada_incremento` | Lema 1: $2t(k) + 2$ pasos, para $k < 5000$ |
 | `test_costo_amortizado_exactamente_4` | Teorema 2, con $\Phi_0 = 0$ y $\Phi \ge 0$ |
-| `test_total_exacto` | el corolario para cada $m \le 20\,000$ |
+| `test_total_exacto` | el corolario para cada $m \le 20\ 000$ |
 | `test_peor_incremento` | $2\lfloor\log_2 m\rfloor + 2$ |
 | `test_cabezal_en_el_bit_mas_significativo_cuesta_m_log_m` | la variante cuesta $\approx 2\sum_k \mathrm{bits}(k)$ |
 
@@ -140,6 +144,6 @@ python -m pytest test_ejercicio_04.py
 ## 7. Resumen
 
 - Incrementar $k$ cuesta $2t(k) + 2$ pasos de máquina de Turing: ir sobre los unos finales, escribir el 1 y volver.
-- Con $\Phi = 2\cdot\#\text{unos}$, el costo amortizado es **exactamente 4**. Como $\Phi_0 = 0 \le \Phi_m$, $m$ incrementos cuestan $4m - 2\,\mathrm{popcount}(m) \le 4m$, aunque uno solo cueste $2\lfloor\log_2 m\rfloor + 2$.
+- Con $\Phi = 2\cdot(\text{unos})$, el costo amortizado es **exactamente 4**. Como $\Phi_0 = 0 \le \Phi_m$, $m$ incrementos cuestan $4m - 2\ \mathrm{popcount}(m) \le 4m$, aunque uno solo cueste $2\lfloor\log_2 m\rfloor + 2$.
 - Cada 1 es una deuda de dos pasos. La contabilidad pega dos monedas a cada 1, y el método agregado da el mismo total exacto.
 - El resultado depende del modelo: con el cabezal en el bit más significativo, o permitiendo decrementos, el peor caso del total pasa a ser $\Theta(m\log m)$.

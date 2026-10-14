@@ -144,7 +144,7 @@ Medido con 4000 arreglos de largo 1 a 15 por generador:
 
 ![Fallos por generador](figuras/ejercicio-08-fallos.png)
 
-*Figura 1. Porcentaje de arreglos donde cada versión se equivoca. De estos seis generadores, "dos pesados plantados" es el único ciego al atajo, por el Teorema 3, pero no al error de la sección 6. El otro generador ciego, el de todos distintos con $n$ múltiplo de 3, no está en la figura.*
+**Figura 1.** Porcentaje de arreglos donde cada versión se equivoca. De estos seis generadores, "dos pesados plantados" es el único ciego al atajo, por el Teorema 3, pero no al error de la sección 6. El otro generador ciego, el de todos distintos con $n$ múltiplo de 3, no está en la figura.
 
 Hay una inversión respecto de la C3, donde "mayoría plantada" era ciego al atajo. Acá la mayoría plantada lo atrapa en más de la mitad de los casos, porque una mayoría ocupa un solo lugar y deja el otro libre para un intruso.
 

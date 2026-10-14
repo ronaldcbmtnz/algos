@@ -6,8 +6,8 @@
 
 | costo | factor $n'/n$ | máquina de la C1, §7 ($10^9$ op/s) |
 |---|---|---|
-| $\Theta(n^2)$ | $\sqrt{1000} \approx 31{,}6$, siempre | $1\,897\,366 \;\to\; 60\,000\,000$ |
-| $\Theta(n \log n)$ | entre $1000\cdot\frac{L}{L+\log_2 1000}$ y $1000$, con $L=\log_2 n$; tiende a 1000 pero nunca llega | $98\,574\,774\,544 \;\to\; 78\,008\,697\,597\,778$, factor $\approx 791$ |
+| $\Theta(n^2)$ | $\sqrt{1000} \approx 31{,}6$, siempre | $1\ 897\ 366 \ \to\  60\ 000\ 000$ |
+| $\Theta(n \log n)$ | entre $1000\cdot\frac{L}{L+\log_2 1000}$ y $1000$, con $L=\log_2 n$; tiende a 1000 pero nunca llega | $98\ 574\ 774\ 544 \ \to\  78\ 008\ 697\ 597\ 778$, factor $\approx 791$ |
 
 Con mil veces más máquina, el algoritmo cuadrático resuelve entradas unas **32 veces** más grandes y el $n \log n$ unas **790 veces** más grandes. Las dos respuestas tienen naturaleza distinta: la primera es una constante que no depende de la máquina, ni de la hora, ni de la constante oculta en $\Theta$; la segunda depende del tamaño que ya se resolvía, y se acerca a 1000 muy despacio (con $n = 10^{100}$ todavía es 971).
 
@@ -19,25 +19,31 @@ Las dos estimaciones suponen que el costo es $c \cdot g(n)$ salvo términos que 
 
 **Modelo.** Word RAM: cada operación sobre palabras cuesta 1, y el costo de un algoritmo es su número de operaciones en el peor caso (C1, §4, §5 y §9). La máquina hace un número fijo $R$ de operaciones por segundo.
 
-**Presupuesto.** En una hora la máquina hace $B = 3600\,R$ operaciones; con $R = 10^9$, como en la C1, §7, $B = 3{,}6\cdot 10^{12}$. Una máquina $M = 1000$ veces más rápida hace $MB$ operaciones en la misma hora. Para el algoritmo da lo mismo que dejar la máquina vieja corriendo 1000 horas (casi 42 días): solo importa el cociente de presupuestos.
+**Presupuesto.** En una hora la máquina hace $B = 3600\ R$ operaciones; con $R = 10^9$, como en la C1, §7, $B = 3{,}6\cdot 10^{12}$. Una máquina $M = 1000$ veces más rápida hace $MB$ operaciones en la misma hora. Para el algoritmo da lo mismo que dejar la máquina vieja corriendo 1000 horas (casi 42 días): solo importa el cociente de presupuestos.
 
 **Qué se pregunta.** Si $T(n)$ es el costo del algoritmo, el mayor tamaño que cabe en el presupuesto es
 
-$$N(B) = \max\lbrace n : T(n) \le B \rbrace,$$
+```math
+N(B) = \max\lbrace n : T(n) \le B \rbrace,
+```
 
 y el factor que pide el ejercicio es
 
-$$k = \frac{N(MB)}{N(B)} = \frac{n'}{n}.$$
+```math
+k = \frac{N(MB)}{N(B)} = \frac{n'}{n}.
+```
 
 **Simplificación.** En las secciones 2 y 3 tomamos $T(n) = c\cdot g(n)$ exactamente y tratamos $n$ como un número real, de modo que $n$ y $n'$ son las soluciones de $T(n) = B$ y $T(n') = MB$. Redondear a enteros mueve el factor en $O(1/n)$, que con $n \approx 10^6$ ya es invisible; la sección 7 lo mide con la búsqueda exacta de la conferencia. La sección 4 quita la hipótesis de que el costo es exactamente $c\cdot g(n)$.
 
 ## 2. Costo $\Theta(n^2)$: el factor es $\sqrt{1000}$ y no depende de nada
 
-Si $T(n) = c\,n^2$, de $c\,n^2 = B$ y $c\,n'^2 = MB$ sale
+Si $T(n) = c\ n^2$, de $c\ n^2 = B$ y $c\ n'^2 = MB$ sale
 
-$$\frac{n'^2}{n^2} = M \quad\Longrightarrow\quad k = \sqrt{M} = \sqrt{1000} \approx 31{,}62.$$
+```math
+\frac{n'^2}{n^2} = M \quad\Longrightarrow\quad k = \sqrt{M} = \sqrt{1000} \approx 31{,}62.
+```
 
-En la cuenta se cancelaron la constante $c$, la velocidad $R$ y la duración de una hora. El factor es una propiedad de la forma $n^2$ y de nada más. Con la misma cuenta, un costo $c\,n^a$ da $k = M^{1/a}$: 1000 para el lineal, 31,6 para el cuadrático, 10 para el cúbico.
+En la cuenta se cancelaron la constante $c$, la velocidad $R$ y la duración de una hora. El factor es una propiedad de la forma $n^2$ y de nada más. Con la misma cuenta, un costo $c\ n^a$ da $k = M^{1/a}$: 1000 para el lineal, 31,6 para el cuadrático, 10 para el cúbico.
 
 Con la máquina de la conferencia: $n = \sqrt{3{,}6\cdot 10^{12}} \approx 1{,}9\cdot 10^6$ pasa a $n' = \sqrt{3{,}6\cdot 10^{15}} = 6\cdot 10^{7}$.
 
@@ -45,9 +51,11 @@ Con la máquina de la conferencia: $n = \sqrt{3{,}6\cdot 10^{12}} \approx 1{,}9\
 
 ### 3.1 La ecuación del factor
 
-Sea $T(n) = c\,n\log_2 n$ y sea $n \ge 2$ el tamaño que se resuelve hoy. Escribimos $n' = k\,n$ y $L = \log_2 n \ge 1$. La condición $T(n') = M\,T(n)$ es $c\,kn\log_2(kn) = M\,c\,n\log_2 n$, y dividiendo entre $c\,n$:
+Sea $T(n) = c\ n\log_2 n$ y sea $n \ge 2$ el tamaño que se resuelve hoy. Escribimos $n' = k\ n$ y $L = \log_2 n \ge 1$. La condición $T(n') = M\ T(n)$ es $c\ kn\log_2(kn) = M\ c\ n\log_2 n$, y dividiendo entre $c\ n$:
 
-$$k\,(L + \log_2 k) = M\,L. \tag{★}$$
+```math
+k\,(L + \log_2 k) = M\,L. \tag{★}
+```
 
 Tres observaciones sobre (★):
 
@@ -59,29 +67,39 @@ Tres observaciones sobre (★):
 
 **Proposición 1.** Para $n \ge 2$ y $M > 1$, la ecuación (★) tiene una única solución $k$, y
 
-$$M\cdot\frac{L}{L + \log_2 M} \;<\; k \;<\; M.$$
+```math
+M\cdot\frac{L}{L + \log_2 M} \;<\; k \;<\; M.
+```
 
-*Demostración.* La función $h(k) = k\,(L + \log_2 k)$ es estrictamente creciente en $k \ge 1$, porque es el producto de dos funciones positivas y crecientes. Además $h(1) = L < ML$ y $h(M) = M(L + \log_2 M) > ML$. Por continuidad y monotonía hay exactamente una solución, y está en $(1, M)$. Eso da la cota superior.
+*Demostración.* La función $h(k) = k\ (L + \log_2 k)$ es estrictamente creciente en $k \ge 1$, porque es el producto de dos funciones positivas y crecientes. Además $h(1) = L < ML$ y $h(M) = M(L + \log_2 M) > ML$. Por continuidad y monotonía hay exactamente una solución, y está en $(1, M)$. Eso da la cota superior.
 
 Para la inferior, se despeja (★) como $k = \dfrac{ML}{L + \log_2 k}$. Como $k < M$, $\log_2 k < \log_2 M$, y el denominador crece al cambiar $k$ por $M$:
 
-$$k = \frac{ML}{L + \log_2 k} > \frac{ML}{L + \log_2 M}. \qquad\blacksquare$$
+```math
+k = \frac{ML}{L + \log_2 k} > \frac{ML}{L + \log_2 M}. \qquad\blacksquare
+```
 
 **Consecuencia.** El déficit relativo cumple $1 - \dfrac{k}{M} < \dfrac{\log_2 M}{L + \log_2 M}$, que tiende a 0 cuando $n \to \infty$. El factor tiende a $M$, pero el déficit $M - k$ se comporta como $M\log_2 M / \log_2 n$: baja con el logaritmo de $n$. Hace falta $n = 10^{100}$ para que el factor llegue a 971.
 
 ### 3.3 Cálculo para la máquina de la conferencia: una iteración que se encierra sola
 
-Para $B = 3{,}6\cdot10^{12}$, la búsqueda exacta de la C1 da $n = 98\,574\,774\,544$, así que $L = 36{,}5205$. Para resolver (★) iteramos
+Para $B = 3{,}6\cdot10^{12}$, la búsqueda exacta de la C1 da $n = 98\ 574\ 774\ 544$, así que $L = 36{,}5205$. Para resolver (★) iteramos
 
-$$k_0 = M, \qquad k_{t+1} = g(k_t), \qquad g(k) = \frac{ML}{L + \log_2 k}.$$
+```math
+k_0 = M, \qquad k_{t+1} = g(k_t), \qquad g(k) = \frac{ML}{L + \log_2 k}.
+```
 
-**Lema 2.** Los iterados alternan alrededor del factor $k^\ast$: los de índice impar son cotas inferiores y los de índice par, superiores. Además $|k_{t+1} - k^\ast| \le q\,|k_t - k^\ast|$ con
+**Lema 2.** Los iterados alternan alrededor del factor $k^\ast$: los de índice impar son cotas inferiores y los de índice par, superiores. Además $|k_{t+1} - k^\ast| \le q\ |k_t - k^\ast|$ con
 
-$$q = \frac{L + \log_2 M}{(L + \log_2 \ell)^2 \ln 2}, \qquad \ell = \frac{ML}{L+\log_2 M}.$$
+```math
+q = \frac{L + \log_2 M}{(L + \log_2 \ell)^2 \ln 2}, \qquad \ell = \frac{ML}{L+\log_2 M}.
+```
 
-*Demostración.* $g$ es decreciente y $g(k^\ast) = k^\ast$. Si $x > k^\ast$ entonces $g(x) < g(k^\ast) = k^\ast$, y si $x < k^\ast$ entonces $g(x) > k^\ast$: cada paso cambia de lado. Como $k_0 = M > k^\ast$, los impares quedan debajo y los pares encima. Todos los iterados y $k^\ast$ están en $[\ell, M]$, porque $k_1 = g(M) = \ell$ y $g$ manda $[\ell, M]$ dentro de $[g(M), g(\ell)] \subseteq [\ell, M]$ (la última inclusión es $g(\ell) \le M$, que vale porque $\ell \ge 1$, o sea $L(M-1) \ge \log_2 M$, cierto para $L \ge 1$ y $M = 1000$). Por el teorema del valor medio, $|g(x) - k^\ast| = |g'(\xi)|\,|x - k^\ast|$ con $\xi \in [\ell, M]$, y
+*Demostración.* $g$ es decreciente y $g(k^\ast) = k^\ast$. Si $x > k^\ast$ entonces $g(x) < g(k^\ast) = k^\ast$, y si $x < k^\ast$ entonces $g(x) > k^\ast$: cada paso cambia de lado. Como $k_0 = M > k^\ast$, los impares quedan debajo y los pares encima. Todos los iterados y $k^\ast$ están en $[\ell, M]$, porque $k_1 = g(M) = \ell$ y $g$ manda $[\ell, M]$ dentro de $[g(M), g(\ell)] \subseteq [\ell, M]$ (la última inclusión es $g(\ell) \le M$, que vale porque $\ell \ge 1$, o sea $L(M-1) \ge \log_2 M$, cierto para $L \ge 1$ y $M = 1000$). Por el teorema del valor medio, $|g(x) - k^\ast| = |g'(\xi)|\ |x - k^\ast|$ con $\xi \in [\ell, M]$, y
 
-$$|g'(\xi)| = \frac{ML}{\xi\,(L + \log_2 \xi)^2 \ln 2} \le \frac{ML}{\ell\,(L + \log_2 \ell)^2 \ln 2} = q,$$
+```math
+|g'(\xi)| = \frac{ML}{\xi\,(L + \log_2 \xi)^2 \ln 2} \le \frac{ML}{\ell\,(L + \log_2 \ell)^2 \ln 2} = q,
+```
 
 usando que $ML/\ell = L + \log_2 M$. $\blacksquare$
 
@@ -96,15 +114,17 @@ Para la máquina de la conferencia, $q \approx 0{,}0315$: cada iteración gana u
 | 4 | 791,36590 | encima | $+1{,}8\cdot10^{-4}$ |
 | 5 | 791,365716 | debajo | $-5{,}5\cdot10^{-6}$ |
 
-El factor es $k^\ast = 791{,}3657\ldots$ La búsqueda exacta de la conferencia da $78\,008\,697\,597\,778 / 98\,574\,774\,544 = 791{,}3657$, el mismo número.
+El factor es $k^\ast = 791{,}3657\ldots$ La búsqueda exacta de la conferencia da $78\ 008\ 697\ 597\ 778 / 98\ 574\ 774\ 544 = 791{,}3657$, el mismo número.
 
 **A mano, sin computadora.** $\log_2(3{,}6\cdot10^{12}) \approx 41{,}7$, y como $n = B/\log_2 n$, dos pasos de $L \leftarrow \log_2(B/L)$ dan $L \approx 41{,}7 \to 36{,}3 \to 36{,}5$. Con $\log_2 1000 \approx 10$, el primer paso da $k \approx 1000\cdot 36{,}5/46{,}5 \approx 785$, y el segundo, con $\log_2 785 \approx 9{,}6$, da $k \approx 1000\cdot 36{,}5/46{,}1 \approx 792$. Dos líneas de aritmética dan tres cifras correctas, y el Lema 2 garantiza que el valor está entre las dos.
 
 ### 3.4 Forma cerrada con la W de Lambert
 
-La ecuación $n\ln n = x$ se escribe $\ln n\cdot e^{\ln n} = x$, así que $\ln n = W(x)$ y $n = x/W(x)$, donde $W$ es la función de Lambert (la inversa de $w \mapsto w e^w$). Con $T(n) = c\,n\log_2 n = B$ el tamaño es $n = X/W(X)$ con $X = B\ln 2/c$, y el de la máquina nueva es $MX/W(MX)$. Dividiendo:
+La ecuación $n\ln n = x$ se escribe $\ln n\cdot e^{\ln n} = x$, así que $\ln n = W(x)$ y $n = x/W(x)$, donde $W$ es la función de Lambert (la inversa de $w \mapsto w e^w$). Con $T(n) = c\ n\log_2 n = B$ el tamaño es $n = X/W(X)$ con $X = B\ln 2/c$, y el de la máquina nueva es $MX/W(MX)$. Dividiendo:
 
-$$k = M\cdot\frac{W(X)}{W(MX)}.$$
+```math
+k = M\cdot\frac{W(X)}{W(MX)}.
+```
 
 Como $W(y) = \ln y - \ln\ln y + o(1)$, el cociente $W(X)/W(MX)$ tiende a 1 y se confirma que $k \to M$. Numéricamente da $791{,}36572169$, igual que la iteración y que la búsqueda.
 
@@ -124,7 +144,7 @@ La cota inferior de la Proposición 1 se equivoca en menos del 5 % en toda la ta
 
 ![Factor en función del tamaño de partida](figuras/ejercicio-01-factor-vs-n.png)
 
-*Figura 1. El factor de $n\log n$ (azul) sube hacia 1000 a medida que crece el tamaño que ya se resolvía; la cota inferior (azul discontinuo) casi se confunde con él. El de $n^2$ (naranja) es la constante $\sqrt{1000}$. Los puntos marcan la máquina de la conferencia.*
+**Figura 1.** El factor de $n\log n$ (azul) sube hacia 1000 a medida que crece el tamaño que ya se resolvía; la cota inferior (azul discontinuo) casi se confunde con él. El de $n^2$ (naranja) es la constante $\sqrt{1000}$. Los puntos marcan la máquina de la conferencia.
 
 ## 4. Qué garantiza $\Theta$ y qué no: por qué el enunciado dice "estima"
 
@@ -132,15 +152,21 @@ $\Theta(n^2)$ esconde una constante y términos de orden menor. Lo único que ga
 
 **Proposición 3.** Sea $T$ no decreciente con $c_1 n^2 \le T(n) \le c_2 n^2$ para todo $n \ge n_0$. Si $n = N(B) \ge n_0$ y $n' = N(MB)$, entonces
 
-$$\sqrt{M\,\frac{c_1}{c_2}} - \frac{1}{n} \;<\; \frac{n'}{n} \;<\; \sqrt{M\,\frac{c_2}{c_1}}\left(1 + \frac{1}{n}\right).$$
+```math
+\sqrt{M\,\frac{c_1}{c_2}} - \frac{1}{n} \;<\; \frac{n'}{n} \;<\; \sqrt{M\,\frac{c_2}{c_1}}\left(1 + \frac{1}{n}\right).
+```
 
 *Demostración.* Por la definición de $N$, $T(n) \le B < T(n+1)$ y $T(n') \le MB < T(n'+1)$, y $n' \ge n \ge n_0$. Para la cota superior:
 
-$$c_1 n'^2 \le T(n') \le MB < M\,T(n+1) \le M c_2 (n+1)^2.$$
+```math
+c_1 n'^2 \le T(n') \le MB < M\,T(n+1) \le M c_2 (n+1)^2.
+```
 
 Para la inferior:
 
-$$c_2 (n'+1)^2 \ge T(n'+1) > MB \ge M\,T(n) \ge M c_1 n^2.$$
+```math
+c_2 (n'+1)^2 \ge T(n'+1) > MB \ge M\,T(n) \ge M c_1 n^2.
+```
 
 Se sacan raíces y se divide entre $n$. $\blacksquare$
 
@@ -148,7 +174,7 @@ Se sacan raíces y se divide entre $n$. $\blacksquare$
 
 *Demostración.* Dado $\varepsilon \in (0,1)$, a partir de algún $n_0$ vale $c(1-\varepsilon)n^2 \le T(n) \le c(1+\varepsilon)n^2$. La Proposición 3 con $c_1 = c(1-\varepsilon)$ y $c_2 = c(1+\varepsilon)$ deja el factor, para $B$ grande, entre $\sqrt{M(1-\varepsilon)/(1+\varepsilon)}$ y $\sqrt{M(1+\varepsilon)/(1-\varepsilon)}$, salvo $O(1/n)$. Como $\varepsilon$ es arbitrario, el límite es $\sqrt M$. $\blacksquare$
 
-Esa es la hipótesis que hay detrás de "31,6": que el costo sea **asintóticamente** $c\,n^2$, no solo $\Theta(n^2)$. Los dos ejemplos siguientes muestran que sin ella la respuesta cambia (tabla 5 de `codigo/ejercicio_01.py`).
+Esa es la hipótesis que hay detrás de "31,6": que el costo sea **asintóticamente** $c\ n^2$, no solo $\Theta(n^2)$. Los dos ejemplos siguientes muestran que sin ella la respuesta cambia (tabla 5 de `codigo/ejercicio_01.py`).
 
 **Ejemplo A: términos de orden menor.** $T(n) = n^2 + 10^6 n$ es $\Theta(n^2)$ y $T(n)/n^2 \to 1$, así que el corolario se aplica: el factor tiende a $\sqrt{1000}$. Pero mientras $n < 10^6$ manda el término lineal, y el algoritmo se porta como uno lineal:
 
@@ -160,19 +186,23 @@ La notación asintótica describe el régimen en que el término dominante domin
 
 **Ejemplo B: un costo $\Theta(n^2)$ sin límite.** Sea
 
-$$T(n) = \frac{n^2\,(3 + \operatorname{sen}\ln n)}{2}.$$
+```math
+T(n) = \frac{n^2\,(3 + \mathrm{sen}\,\ln n)}{2}.
+```
 
 Cumple $n^2 \le T(n) \le 2n^2$, así que es $\Theta(n^2)$ con $c_1 = 1$ y $c_2 = 2$. Es creciente, porque
 
-$$T'(n) = n\left(3 + \operatorname{sen}\ln n + \tfrac12\cos\ln n\right) \ge n\left(3 - \sqrt{1 + \tfrac14}\right) > 0.$$
+```math
+T'(n) = n\left(3 + \mathrm{sen}\,\ln n + \tfrac12\cos\ln n\right) \ge n\left(3 - \sqrt{1 + \tfrac14}\right) > 0.
+```
 
 Pero $T(n)/n^2$ oscila sin límite, y entre $n$ y $31n$ el logaritmo avanza $\ln 31 \approx 3{,}4$, algo más de media vuelta del seno, así que $T(n)/n^2$ y $T(n')/n'^2$ pueden estar en extremos opuestos. El resultado es que el factor oscila para siempre: con presupuestos entre $10^{8}$ y $10^{30}$ toma valores desde **22,364** hasta **43,964**. La Proposición 3 lo encierra en $[\sqrt{500}, \sqrt{2000}] = [22{,}361;\ 44{,}721]$, y el ejemplo recorre casi toda esa banda, así que **con solo la información de $\Theta$ las cotas de la Proposición 3 son esencialmente las mejores posibles**.
 
 ![Dos costos Θ(n²) cuyo factor no es √1000](figuras/ejercicio-01-theta-no-basta.png)
 
-*Figura 2. El costo con término lineal (naranja) empieza con factor cercano a 1000 y converge a $\sqrt{1000}$. El costo oscilante (azul) nunca converge y recorre la banda de la Proposición 3 (gris).*
+**Figura 2.** El costo con término lineal (naranja) empieza con factor cercano a 1000 y converge a $\sqrt{1000}$. El costo oscilante (azul) nunca converge y recorre la banda de la Proposición 3 (gris).
 
-La lectura para el ejercicio: "estima" es la palabra correcta. El factor $\sqrt{1000}$ es exacto para un costo $c\,n^2$ y es el límite para cualquier costo asintótico a $c\,n^2$, que es lo que tienen los algoritmos que vemos en el curso. Con solo $\Theta(n^2)$ lo único garantizado es la banda.
+La lectura para el ejercicio: "estima" es la palabra correcta. El factor $\sqrt{1000}$ es exacto para un costo $c\ n^2$ y es el límite para cualquier costo asintótico a $c\ n^2$, que es lo que tienen los algoritmos que vemos en el curso. Con solo $\Theta(n^2)$ lo único garantizado es la banda.
 
 ## 5. Con algoritmos de verdad: inserción y mezcla
 
@@ -196,7 +226,7 @@ Inserción da $\sqrt{1000}$ con cuatro decimales. Mezcla da un poco menos que el
 
 ![Factor en función de la velocidad de la máquina](figuras/ejercicio-01-factor-vs-M.png)
 
-*Figura 3. Factor del tamaño resoluble según cuántas veces más rápida es la máquina, para el presupuesto de una hora de la conferencia.*
+**Figura 3.** Factor del tamaño resoluble según cuántas veces más rápida es la máquina, para el presupuesto de una hora de la conferencia.
 
 **La otra cara: los datos crecen.** Si los datos crecen 1000 veces junto con la máquina, el algoritmo $n\log n$ hace $T(1000n)/T(n) = 1000\cdot\frac{L + \log_2 1000}{L} \approx 1273$ veces más operaciones, que en la máquina 1000 veces más rápida son $1{,}27$ horas, unos 76 minutos. El cuadrático pasa de una hora a **1000 horas**, casi 42 días. Es el argumento de la C1, §7, con números: el $n\log n$ casi sigue el paso del hardware y el cuadrático se queda atrás.
 
@@ -240,6 +270,6 @@ python -m pytest test_ejercicio_01.py
 ## 8. Resumen
 
 - Mil veces más máquina compra $\sqrt{1000} \approx 31{,}6$ veces más tamaño a un algoritmo cuadrático, sin importar la constante, la máquina ni el tiempo disponible.
-- A un algoritmo $n\log n$ le compra un factor $k$ que resuelve $k(L + \log_2 k) = 1000\,L$, con $L = \log_2 n$. Está entre $1000\,L/(L+\log_2 1000)$ y 1000, y vale $\approx 791$ para la máquina de la conferencia.
+- A un algoritmo $n\log n$ le compra un factor $k$ que resuelve $k(L + \log_2 k) = 1000\ L$, con $L = \log_2 n$. Está entre $1000\ L/(L+\log_2 1000)$ y 1000, y vale $\approx 791$ para la máquina de la conferencia.
 - La constante y la base del logaritmo nunca importan. El tamaño de partida importa solo para $n\log n$.
 - $\Theta$ sola no fija el factor: hace falta que el costo sea asintóticamente $c\cdot g(n)$. Sin eso, un costo $\Theta(n^2)$ puede tener cualquier factor dentro de una banda, y la banda de la Proposición 3 es ajustada.

@@ -56,7 +56,9 @@ Recordemos la demostración, porque es la herramienta de la sección siguiente. 
 
 Se corre la mezcla optimizada contestando según el intercalado perfecto. Compara
 
-$$(a_1, b_1),\ (b_1, a_2),\ (a_2, b_2),\ \dots,\ (a_{n-1}, b_{n-1}),$$
+```math
+(a_1, b_1),\ (b_1, a_2),\ (a_2, b_2),\ \dots,\ (a_{n-1}, b_{n-1}),
+```
 
 que son $2n - 3$ pares. Al sacar $a_{n-1}$ a $A$ le queda solo $a_n$, y se detiene. Quedan sin comparar los dos últimos pares de vecinos, $(b_{n-1}, a_n)$ y $(a_n, b_n)$.
 
@@ -69,7 +71,7 @@ La mezcla optimizada da la misma salida para las dos, $\dots, b_{n-1}, b_n, a_n$
 
 ![La cadena del adversario](figuras/ejercicio-09-cadena.png)
 
-*Figura 1. El intercalado perfecto con $n = 5$. Cada línea es un par de vecinos. La mezcla compara los 9 (naranja). La optimizada compara 7 y deja dos sin comparar (rojo punteado), y en esos dos pares está su error.*
+**Figura 1.** El intercalado perfecto con $n = 5$. Cada línea es un par de vecinos. La mezcla compara los 9 (naranja). La optimizada compara 7 y deja dos sin comparar (rojo punteado), y en esos dos pares está su error.
 
 **El detector.** El procedimiento no depende del algoritmo: se le da cualquier mezcla como caja negra, con un comparador que registra qué pares se compararon. El código (`adversario`) lo hace con cuatro mezclas, para $n = 6$:
 

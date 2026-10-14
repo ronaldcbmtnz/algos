@@ -38,7 +38,7 @@ La esquina superior derecha es la única, junto con la inferior izquierda, donde
 
 ![La búsqueda en escalera y el adversario](figuras/ejercicio-06-escalera.png)
 
-*Figura 1. Izquierda: buscar $x = 33$ en una matriz al azar. Los números azules son el orden de las comparaciones; en verde las filas descartadas, en naranja las columnas descartadas. Derecha: la matriz del adversario para $n = 7$. Las 13 celdas de la escalera (azul $= x - 1$, naranja $= x + 1$) son exactamente las que la búsqueda recorre, y cualquiera de ellas podría valer $x$.*
+**Figura 1.** Izquierda: buscar $x = 33$ en una matriz al azar. Los números azules son el orden de las comparaciones; en verde las filas descartadas, en naranja las columnas descartadas. Derecha: la matriz del adversario para $n = 7$. Las 13 celdas de la escalera (azul $= x - 1$, naranja $= x + 1$) son exactamente las que la búsqueda recorre, y cualquiera de ellas podría valer $x$.
 
 ## 3. Correctitud: el invariante
 
@@ -70,11 +70,15 @@ Compárese con buscar binariamente en cada fila, que hace $n\lceil\log_2(n+1)\rc
 
 *Demostración.* Sean las dos antidiagonales
 
-$$D_0 = \lbrace (i,j) : i + j = n-1\rbrace \quad (n \text{ celdas}), \qquad D_1 = \lbrace (i,j) : i + j = n\rbrace \quad (n-1 \text{ celdas}).$$
+```math
+D_0 = \lbrace (i,j) : i + j = n-1\rbrace \quad (n \text{ celdas}), \qquad D_1 = \lbrace (i,j) : i + j = n\rbrace \quad (n-1 \text{ celdas}).
+```
 
 Con $x = 2n$ definimos la matriz $M^\ast$:
 
-$$M^\ast[i][j] = \begin{cases} 2(i+j) - 1 & \text{si } i + j < n-1 \quad (\text{todas} < x-1)\\ x - 1 & \text{si } (i,j) \in D_0\\ x + 1 & \text{si } (i,j) \in D_1\\ 2(i+j) + 1 & \text{si } i + j > n \quad (\text{todas} > x+1).\end{cases}$$
+```math
+M^\ast[i][j] = \begin{cases} 2(i+j) - 1 & \text{si } i + j < n-1 \quad (\text{todas} < x-1)\\ x - 1 & \text{si } (i,j) \in D_0\\ x + 1 & \text{si } (i,j) \in D_1\\ 2(i+j) + 1 & \text{si } i + j > n \quad (\text{todas} > x+1).\end{cases}
+```
 
 **$M^\ast$ está ordenada y no contiene a $x$.** El valor solo depende de $i + j$ y crece con $i + j$. Un paso a la derecha o hacia abajo sube $i+j$ en 1, y eso sube el valor estrictamente.
 
@@ -87,8 +91,8 @@ Las otras desigualdades no involucran a $c$. Así que $M_c$ es una matriz ordena
 
 **El adversario.** Contesta cada comparación según $M^\ast$:
 
-- "$<$" para las celdas con $i + j \le n - 1$;
-- "$>$" para las demás.
+- responde $<$ para las celdas con $i + j \le n - 1$;
+- responde $>$ para las demás.
 
 Si el algoritmo termina habiendo comparado menos de $2n - 1$ veces, hay una celda $c$ de la escalera que no miró. $M^\ast$ y $M_c$ dan exactamente las mismas respuestas a todas sus comparaciones, así que el algoritmo responde lo mismo para las dos. Pero en una está $x$ y en la otra no: se equivoca en alguna. $\blacksquare$
 

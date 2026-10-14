@@ -38,13 +38,13 @@ def busqueda_binaria(A, x):
 
 ## 2. El invariante
 
-**(I)** Al empezar cada vuelta: $0 \le lo \le hi \le n$, $\;A[k] < x$ para todo $k < lo$, y $\;A[k] > x$ para todo $k \ge hi$.
+**(I)** Al empezar cada vuelta: $0 \le lo \le hi \le n$, $\ A[k] < x$ para todo $k < lo$, y $\ A[k] > x$ para todo $k \ge hi$.
 
 La Figura 1 lo muestra en acción: la zona verde ($k < lo$) solo tiene valores menores que $x$, la naranja ($k \ge hi$) solo mayores, y la blanca es lo que falta mirar.
 
 ![El invariante, vuelta por vuelta](figuras/ejercicio-02-invariante.png)
 
-*Figura 1. Búsqueda de $x = 40$, que no está, en un arreglo de 15 elementos. Cada fila es una vuelta y el recuadro azul es $m$. Al terminar, $lo = hi = 9$: $x$ va entre el 37 y el 41.*
+**Figura 1.** Búsqueda de $x = 40$, que no está, en un arreglo de 15 elementos. Cada fila es una vuelta y el recuadro azul es $m$. Al terminar, $lo = hi = 9$: $x$ va entre el 37 y el 41.
 
 **Teorema 1 (correctitud parcial).** Si la búsqueda termina, cumple la postcondición.
 
@@ -92,7 +92,7 @@ Los dos potenciales hacen trabajos distintos. $\Phi$ es el que pide el enunciado
 
 **Teorema 3 (C5, §3).** Todo algoritmo que busca $x$ en un arreglo ordenado de $n$ elementos comparando $x$ con elementos hace, en el peor caso, al menos $\lceil\log_2(n+1)\rceil$ comparaciones.
 
-*Demostración.* El algoritmo es un árbol de decisión ternario. Contar todas las salidas no alcanza: hay $n$ posiciones y $n+1$ huecos, y $2n+1$ salidas en un árbol de tres ramas solo dan $\log_3(2n+1)$, que es menos. El truco de la C5 es mirar únicamente las entradas donde $x$ **no está**. Ahí ninguna comparación puede dar "$=$", así que esas ejecuciones viven en un subárbol **binario**.
+*Demostración.* El algoritmo es un árbol de decisión ternario. Contar todas las salidas no alcanza: hay $n$ posiciones y $n+1$ huecos, y $2n+1$ salidas en un árbol de tres ramas solo dan $\log_3(2n+1)$, que es menos. El truco de la C5 es mirar únicamente las entradas donde $x$ **no está**. Ahí ninguna comparación puede dar la respuesta $=$, así que esas ejecuciones viven en un subárbol **binario**.
 
 Además, dos valores $x_1 < x_2$ en huecos distintos tienen que llegar a hojas distintas. Entre los dos huecos hay algún $A[i]$ con $x_1 < A[i] < x_2$. Si el algoritmo nunca comparó con él, el valor $x = A[i]$ recibe las mismas respuestas que $x_1$ y $x_2$ en cada comparación y llega a la misma hoja, que dice "no está". Pero $A[i]$ sí está (C5, Lema 4).
 
@@ -105,11 +105,11 @@ Son $n+1$ hojas en un árbol binario, así que la altura es al menos $\lceil\log
 El código lo confirma de dos maneras:
 
 - Corre la búsqueda con todos los $x$ posibles (cada elemento y un valor en cada hueco) para $n = 1, \dots, 1024$. El peor caso medido coincide con la cota **en los 1024 casos**. La Figura 2 muestra los primeros 129.
-- Para cada $n$ hasta 200 registra el camino de un valor en cada hueco. Los $n+1$ caminos son distintos y ninguno tiene una respuesta "$=$", que es lo que dice el lema.
+- Para cada $n$ hasta 200 registra el camino de un valor en cada hueco. Los $n+1$ caminos son distintos y ninguno tiene una respuesta $=$, que es lo que dice el lema.
 
 ![Peor caso contra la cota](figuras/ejercicio-02-peor-caso.png)
 
-*Figura 2. El peor caso medido (puntos) y la cota $\lceil\log_2(n+1)\rceil$ (escalera gris) coinciden en cada $n$. Los saltos están en $n = 2^k$.*
+**Figura 2.** El peor caso medido (puntos) y la cota $\lceil\log_2(n+1)\rceil$ (escalera gris) coinciden en cada $n$. Los saltos están en $n = 2^k$.
 
 ## 5. Lo que el invariante y el potencial dicen que hay que probar
 
@@ -136,9 +136,9 @@ Medido con 4000 casos por generador:
 
 ![Porcentaje de fallos por generador](figuras/ejercicio-02-fallos.png)
 
-*Figura 3. Los dos ceros son teoremas: `lo = m` no puede fallar con $x$ presente, y `hi = m - 1` no puede equivocarse en "está / no está" con $x$ ausente. Si además se mira el hueco, el segundo error aparece también con $x$ ausente (barra verde, 35 %).*
+**Figura 3.** Los dos ceros son teoremas: `lo = m` no puede fallar con $x$ presente, y `hi = m - 1` no puede equivocarse en "está / no está" con $x$ ausente. Si además se mira el hueco, el segundo error aparece también con $x$ ausente (barra verde, 35 %).
 
-Los dos ceros no son mala suerte. Son teoremas, y las pruebas `test_lo_igual_m_termina_si_x_esta` y `test_hi_igual_m_menos_1_no_se_equivoca_en_esta_si_x_falta` los comprueban. El generador más natural, "$x$ cualquiera", casi siempre produce un $x$ ausente. Atrapa el error 1, pero ve el error 2 en apenas el 0,6 % de los casos. La lista de casos que hay que probar sale de las piezas de la demostración:
+Los dos ceros no son mala suerte. Son teoremas, y las pruebas `test_lo_igual_m_termina_si_x_esta` y `test_hi_igual_m_menos_1_no_se_equivoca_en_esta_si_x_falta` los comprueban. El generador más natural, el de $x$ cualquiera, casi siempre produce un $x$ ausente. Atrapa el error 1, pero ve el error 2 en apenas el 0,6 % de los casos. La lista de casos que hay que probar sale de las piezas de la demostración:
 
 - $x$ presente, para el invariante;
 - $x$ ausente, para el potencial;

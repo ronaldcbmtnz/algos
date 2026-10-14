@@ -18,7 +18,7 @@
 
 **Además:**
 
-- La información no alcanza: da solo $\approx 1{,}26\,n$, y hace falta el adversario, como en la C5.
+- La información no alcanza: da solo $\approx 1{,}26\ n$, y hace falta el adversario, como en la C5.
 - Los dos punteros son la búsqueda en escalera del ejercicio 6 sobre la matriz $A[i] - B[j]$, y el adversario es el intercalado del ejercicio 9.
 - Fuera del modelo la historia cambia: con listas desordenadas y hashing se puede hacer en $O(n)$ esperado, y con largos muy distintos gana la búsqueda exponencial.
 
@@ -83,7 +83,9 @@ En palabras: cada elemento común está o con sus dos copias ya procesadas (y en
 
 **Conclusión.** Al salir, $i = n$ o $j = n$, así que $A[i..n) \cap B[j..n) = \emptyset$ porque uno de los dos es vacío. Partiendo $A \cap B$ según si cada copia está procesada o no,
 
-$$A \cap B = \underbrace{\big(A[0..i) \cap B[0..j)\big)}_{R \text{ por (1)}} \cup \underbrace{\big(A[0..i) \cap B[j..)\big)}_{\emptyset \text{ por (2)}} \cup \underbrace{\big(A[i..) \cap B[0..j)\big)}_{\emptyset \text{ por (3)}} \cup \underbrace{\big(A[i..) \cap B[j..)\big)}_{\emptyset},$$
+```math
+A \cap B = \underbrace{\big(A[0..i) \cap B[0..j)\big)}_{R \text{ por (1)}} \cup \underbrace{\big(A[0..i) \cap B[j..)\big)}_{\emptyset \text{ por (2)}} \cup \underbrace{\big(A[i..) \cap B[0..j)\big)}_{\emptyset \text{ por (3)}} \cup \underbrace{\big(A[i..) \cap B[j..)\big)}_{\emptyset},
+```
 
 así que $R = A \cap B$, y está en orden porque se agregó en orden creciente. $\blacksquare$
 
@@ -97,7 +99,7 @@ El código vigila (I) al empezar cada vuelta en 1000 entradas al azar (`test_inv
 
 *Demostración.* Cada comparación baja $\Phi$ en al menos 1. El ciclo solo sigue mientras $i < n$ y $j < n$, o sea mientras $\Phi \ge 2$, con al menos un elemento sin procesar en cada lista. $\Phi$ empieza en $2n$, así que hay a lo sumo $2n - 1$ comparaciones. En el **intercalado perfecto** $a_1 < b_1 < a_2 < b_2 < \dots < a_n < b_n$, cada comparación avanza un solo puntero, y se hacen exactamente $2n - 1$ antes de que $A$ se acabe. $\blacksquare$
 
-**Experimentar antes de demostrar** (C2, §7; resumen del tema, §3). ¿Se puede hacer mejor que $2n - 1$? Antes de intentar una demostración lo calculamos. Para la versión de decisión, lo único que importa de una entrada es el **orden relativo** entre los elementos de $A$ y los de $B$, incluidos los empates. Ese orden es una sucesión de pasos "$a$", "$b$" o "$=$" con $n$ de cada lista. El código enumera todos esos órdenes y calcula por búsqueda exhaustiva la profundidad del mejor árbol de decisión que decide si hay un "$=$":
+**Experimentar antes de demostrar** (C2, §7; resumen del tema, §3). ¿Se puede hacer mejor que $2n - 1$? Antes de intentar una demostración lo calculamos. Para la versión de decisión, lo único que importa de una entrada es el **orden relativo** entre los elementos de $A$ y los de $B$, incluidos los empates. Ese orden es una sucesión de pasos $a$, $b$ o $=$, con $n$ de cada lista. El código enumera todos esos órdenes y calcula por búsqueda exhaustiva la profundidad del mejor árbol de decisión que decide si hay un paso $=$:
 
 | $n$ | órdenes relativos posibles | óptimo exacto | $2n - 1$ |
 |---|---|---|---|
@@ -112,7 +114,7 @@ Las cantidades de órdenes, 3, 13, 63, 321, son los **números de Delannoy centr
 
 ### 5.1 La información no alcanza
 
-La versión de decisión tiene **dos** salidas, así que la información da una comparación. La intersección completa tiene tantas salidas como formas de elegir qué elementos de $A$ coinciden con cuáles de $B$: $\sum_k \binom{n}{k}^2 = \binom{2n}{n}$. Con comparaciones de tres salidas eso da $\lceil\log_3\binom{2n}{n}\rceil \approx 1{,}26\,n$:
+La versión de decisión tiene **dos** salidas, así que la información da una comparación. La intersección completa tiene tantas salidas como formas de elegir qué elementos de $A$ coinciden con cuáles de $B$: $\sum_k \binom{n}{k}^2 = \binom{2n}{n}$. Con comparaciones de tres salidas eso da $\lceil\log_3\binom{2n}{n}\rceil \approx 1{,}26\ n$:
 
 | $n$ | información $\lceil\log_3\binom{2n}{n}\rceil$ | adversario $2n - 1$ | para comparar: información de la mezcla, $\lceil\log_2\binom{2n}{n}\rceil$ |
 |---|---|---|---|
@@ -151,7 +153,7 @@ Por los Teoremas 1 y 2, los dos punteros son **óptimos exactos**: $2n - 1$ comp
 
 ![Dos punteros sobre la matriz A[i] − B[j]](figuras/ejercicio-14-matriz.png)
 
-*Figura 1. La matriz $A[i] - B[j]$ para un ejemplo con $n = 7$. Los recuadros azules son las 11 comparaciones de los dos punteros: cada una descarta una fila o una columna, o las dos cuando encuentra un 0. Los ceros son la intersección $\lbrace 9, 17\rbrace$.*
+**Figura 1.** La matriz $A[i] - B[j]$ para un ejemplo con $n = 7$. Los recuadros azules son las 11 comparaciones de los dos punteros: cada una descarta una fila o una columna, o las dos cuando encuentra un 0. Los ceros son la intersección $\lbrace 9, 17\rbrace$.
 
 Pero la cota del ejercicio 6 no se transfiere sola. Allá el adversario elegía matrices ordenadas cualesquiera, y las de la forma $A[i] - B[j]$ son una subclase muy particular: están determinadas por $2n$ números, no por $n^2$. El Teorema 2 demuestra que la cota $2n - 1$ sigue valiendo dentro de esa subclase. Comparamos además los **patrones de signos** posibles en los dos problemas. Con las columnas invertidas, todo patrón de $A[i] - B[j]$ es un patrón válido del ejercicio 6: no decrece hacia la derecha ni hacia abajo, y no tiene dos ceros vecinos, porque las listas son estrictamente crecientes. Lo contrario no es obvio, porque una matriz ordenada tiene $n^2$ entradas libres y la de diferencias solo $2n$. Pero para $n \le 3$ los dos conjuntos tienen el mismo tamaño (3, 13 y 63 patrones), así que son **el mismo conjunto**, y los dos juegos de decisión coinciden. La prueba `test_mismos_patrones_que_el_ejercicio_6` compara los conjuntos uno contra otro.
 
@@ -161,7 +163,7 @@ Pero la cota del ejercicio 6 no se transfiere sola. Allá el adversario elegía 
 
 - **La cota de la mezcla no se transfiere.** Un algoritmo de intersección no tiene que producir el orden de $A \cup B$, así que la cota de la mezcla no se le aplica. Hizo falta un argumento propio, el Teorema 2. Que sobre el intercalado perfecto termine comparando todos los vecinos, y por lo tanto conociendo el orden completo, es una consecuencia de ese teorema, no una hipótesis.
 - **Cada adversario solo sirve para su problema.** Para la mezcla, igualar un par de vecinos no sirve: con $u = v$ las dos formas de ordenarlos son correctas, y no hay contradicción. Para la intersección, intercambiarlos no sirve: la intersección sigue vacía y la respuesta no cambia.
-- **La información se porta distinto.** En la mezcla, con valores distintos, hay $\binom{2n}{n}$ salidas en un árbol binario, y la información da $\lceil\log_2\binom{2n}{n}\rceil \approx 2n - \tfrac12\log_2(\pi n)$: 1995 contra 1999 con $n = 1000$ (última columna de la tabla de la sección 5.1). Casi alcanza al adversario. En la intersección la información da solo $\approx 1{,}26\,n$, y todo el resto lo pone el adversario.
+- **La información se porta distinto.** En la mezcla, con valores distintos, hay $\binom{2n}{n}$ salidas en un árbol binario, y la información da $\lceil\log_2\binom{2n}{n}\rceil \approx 2n - \tfrac12\log_2(\pi n)$: 1995 contra 1999 con $n = 1000$ (última columna de la tabla de la sección 5.1). Casi alcanza al adversario. En la intersección la información da solo $\approx 1{,}26\ n$, y todo el resto lo pone el adversario.
 
 ## 7. Qué escondía el modelo
 
@@ -181,7 +183,7 @@ La cota es una afirmación sobre un modelo (C2, §10; C5, §9). Fuera de sus hip
 
 ![Dos punteros contra galope](figuras/ejercicio-14-galope.png)
 
-*Figura 2. Comparaciones según el largo de la lista corta. Con $m \ll n$ el galope gana por órdenes de magnitud. Con $m = n$ los dos punteros ganan, y son óptimos exactos.*
+**Figura 2.** Comparaciones según el largo de la lista corta. Con $m \ll n$ el galope gana por órdenes de magnitud. Con $m = n$ los dos punteros ganan, y son óptimos exactos.
 
 La coincidencia exacta del Teorema 2 es entonces para listas del **mismo largo**, que es el problema que enunciamos. Para $m \ll n$ el orden correcto es otro, $m \log(n/m)$, y demostrar su cota mínima queda fuera de este ejercicio. Es la misma lección del caso típico y la garantía: la respuesta depende de qué parte del espacio de entradas importa.
 

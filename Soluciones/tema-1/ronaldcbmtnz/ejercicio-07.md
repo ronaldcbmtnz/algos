@@ -6,7 +6,7 @@
 
 - **La idea.** El $n$-ésimo menor es el máximo de las primeras $n$ posiciones de la mezcla. Esas $n$ posiciones son los primeros $i$ de $A$ y los primeros $n-i$ de $B$ para el único corte $i$ que deja todo lo de la izquierda menor o igual que todo lo de la derecha (Lema 1).
 - **Algoritmo clásico.** Búsqueda binaria del corte $i^\ast$ sobre $i \in \lbrace 0,\dots,n\rbrace$, comparando $A[i]$ con $B[n-1-i]$, y una comparación final para el máximo. Usa $\lceil\log_2(n+1)\rceil + 1$ comparaciones como mucho.
-- **Algoritmo de la escalera** (el que proponemos). Los $2n-1$ pares $(A[i], B[n-1-i])$ y $(A[i], B[n-2-i])$, puestos en orden, forman una **escalera** sobre la que el predicado "$A[i] < B[j]$" es monótono (Lema 2). Una sola búsqueda binaria del primer falso da la mediana directamente (Teorema 3), con **$\lceil\log_2 2n\rceil$ comparaciones**.
+- **Algoritmo de la escalera** (el que proponemos). Los $2n-1$ pares $(A[i], B[n-1-i])$ y $(A[i], B[n-2-i])$, puestos en orden, forman una **escalera** sobre la que el predicado $A[i] < B[j]$ es monótono (Lema 2). Una sola búsqueda binaria del primer falso da la mediana directamente (Teorema 3), con **$\lceil\log_2 2n\rceil$ comparaciones**.
 - **Cota de información.** Cualquiera de los $2n$ elementos puede ser la mediana, y con valores distintos cada comparación tiene solo dos respuestas. Así que hacen falta **$\lceil\log_2 2n\rceil$ comparaciones** (Teorema 4).
 - **Conclusión.** La escalera alcanza la cota **exactamente, para todo $n$**. Lo verificamos sobre todos los intercalados posibles, hasta 184 756 entradas con $n = 10$. El clásico gasta una comparación de más cuando $n \ge 2$ es potencia de 2.
 - **Conexión con el ejercicio 6.** La matriz de signos de $A[i] - B[j]$ es una matriz ordenada como la del ejercicio 6, y en las dos aparece una escalera de $2n - 1$ celdas, pero son perpendiculares. Allá la escalera del adversario corre **a lo largo** de la frontera entre $<$ y $>$, cada celda puede ser $x$ por su cuenta, y hay que leerla entera. Acá la escalera **cruza** la frontera una sola vez, el predicado es monótono sobre ella, y alcanza con una búsqueda binaria.
@@ -23,13 +23,15 @@ $A[0..n)$ y $B[0..n)$ están ordenados de forma no decreciente, y puede haber re
 
 **Lema 1.** Sea $i \in \lbrace 0, \dots, n\rbrace$, $j = n - i$, y sea $L_i = A[0..i) \cup B[0..j)$, que tiene $n$ elementos. Supongamos que todo elemento de $L_i$ es menor o igual que todo elemento del resto, o sea
 
-$$A[i-1] \le B[j] \quad\text{y}\quad B[j-1] \le A[i],$$
+```math
+A[i-1] \le B[j] \quad\text{y}\quad B[j-1] \le A[i],
+```
 
 omitiendo las desigualdades con índices fuera de rango. Entonces el $n$-ésimo menor es $\max L_i = \max(A[i-1], B[j-1])$.
 
 *Demostración.* Como los arreglos están ordenados, las dos desigualdades dicen que $\max L_i \le \min(\text{resto})$. Entonces la mezcla ordenada puede listar primero los $n$ elementos de $L_i$ y después el resto, y su posición $n$ es $\max L_i$. $\blacksquare$
 
-**Lema 2.** Sea $g(i) = [\,A[i] \ge B[n-1-i]\,]$ para $0 \le i < n$, y sea $g(n)$ verdadero. Entonces $g$ es monótona: falsa, ..., falsa, verdadera, ..., verdadera. Y en $i^\ast = \min\lbrace i : g(i)\rbrace$ el corte cumple las hipótesis del Lema 1.
+**Lema 2.** Sea $g(i) = [\ A[i] \ge B[n-1-i]\ ]$ para $0 \le i < n$, y sea $g(n)$ verdadero. Entonces $g$ es monótona: falsa, ..., falsa, verdadera, ..., verdadera. Y en $i^\ast = \min\lbrace i : g(i)\rbrace$ el corte cumple las hipótesis del Lema 1.
 
 *Demostración.*
 
@@ -40,7 +42,7 @@ omitiendo las desigualdades con índices fuera de rango. Entonces el $n$-ésimo 
 - Si $i^\ast < n$, $g(i^\ast)$ da $B[j^\ast - 1] \le A[i^\ast]$. Si $i^\ast = n$, entonces $j^\ast = 0$ y no hay nada que ver.
 - Si $i^\ast > 0$, $g(i^\ast - 1)$ es falsa, o sea $A[i^\ast - 1] < B[n - i^\ast] = B[j^\ast]$. Si $i^\ast = 0$, no hay nada que ver. $\blacksquare$
 
-**El algoritmo clásico** es una búsqueda binaria de $i^\ast$ en $[0, n]$, con el invariante "$i^\ast \in [lo, hi]$" y el potencial $hi - lo$, como en el ejercicio 2. Hace $\lceil\log_2(n+1)\rceil$ comparaciones, más **una** para el máximo final cuando $0 < i^\ast < n$.
+**El algoritmo clásico** es una búsqueda binaria de $i^\ast$ en $[0, n]$, con el invariante $i^\ast \in [lo, hi]$ y el potencial $hi - lo$, como en el ejercicio 2. Hace $\lceil\log_2(n+1)\rceil$ comparaciones, más **una** para el máximo final cuando $0 < i^\ast < n$.
 
 ## 3. El algoritmo de la escalera
 
@@ -48,9 +50,11 @@ La comparación final del clásico, $A[i^\ast-1]$ contra $B[j^\ast-1]$, no es un
 
 **La escalera.** Son los $2n - 1$ pares
 
-$$P_0 = (0, n-1),\ P_1 = (0, n-2),\ P_2 = (1, n-2),\ P_3 = (1, n-3),\ \dots,\ P_{2n-2} = (n-1, 0).$$
+```math
+P_0 = (0, n-1),\ P_1 = (0, n-2),\ P_2 = (1, n-2),\ P_3 = (1, n-3),\ \dots,\ P_{2n-2} = (n-1, 0).
+```
 
-Es decir, $P_{2i} = (i, n-1-i)$ y $P_{2i+1} = (i, n-2-i)$. Sea $q(k) = [\,A[i] < B[j]\,]$ para $P_k = (i,j)$.
+Es decir, $P_{2i} = (i, n-1-i)$ y $P_{2i+1} = (i, n-2-i)$. Sea $q(k) = [\ A[i] < B[j]\ ]$ para $P_k = (i,j)$.
 
 **Lema 2' (monotonía en la escalera).** $q(0), q(1), \dots, q(2n-2)$ es verdadero, ..., verdadero, falso, ..., falso. Vale también con repetidos.
 
@@ -60,11 +64,13 @@ Una forma de verlo es en la matriz de signos de $A[i] - B[j]$. Si se invierten l
 
 ![La matriz de comparaciones y su escalera](figuras/ejercicio-07-escalera.png)
 
-*Figura 1. La matriz $A[i]$ vs $B[j]$ para un ejemplo con $n = 8$, con las columnas de $B$ en orden inverso. Verde es $A[i] < B[j]$ y naranja $A[i] \ge B[j]$. La frontera entre los dos colores baja hacia la izquierda. El camino de los 15 pares de la escalera (contorno azul) baja hacia la derecha y la cruza una sola vez. Los números azules son las 4 comparaciones de la búsqueda binaria, que dan la mediana 10.*
+**Figura 1.** La matriz $A[i]$ vs $B[j]$ para un ejemplo con $n = 8$, con las columnas de $B$ en orden inverso. Verde es $A[i] < B[j]$ y naranja $A[i] \ge B[j]$. La frontera entre los dos colores baja hacia la izquierda. El camino de los 15 pares de la escalera (contorno azul) baja hacia la derecha y la cruza una sola vez. Los números azules son las 4 comparaciones de la búsqueda binaria, que dan la mediana 10.
 
 **Teorema 3.** Sea $s$ el primer índice con $q(s)$ falso ($s = 2n - 1$ si son todos verdaderos). Entonces la mediana es
 
-$$\begin{cases} A\big[(s-1)/2\big] & \text{si } s \text{ es impar},\\ B\big[n - 1 - s/2\big] & \text{si } s \text{ es par}.\end{cases}$$
+```math
+\begin{cases} A\big[(s-1)/2\big] & \text{si } s \text{ es impar},\\ B\big[n - 1 - s/2\big] & \text{si } s \text{ es par}.\end{cases}
+```
 
 *Demostración.* Las posiciones pares son $q(2i) = \lnot g(i)$, así que $i^\ast$ es el primer $i$ con $q(2i)$ falso.
 
@@ -111,9 +117,9 @@ def mediana_escalera(A, B):
 
 *Demostración.* Hay dos pasos, como en la C5, §3.
 
-**Hay $2n$ salidas posibles.** Cualquiera de los $2n$ elementos puede ser la mediana. Para que $A[i]$ lo sea, alcanza con un intercalado donde $A[i]$ tenga debajo exactamente $i$ elementos de $A$ y $n-1-i$ de $B$, y eso es posible porque $0 \le n-1-i \le n-1$. Igual para $B[j]$. El algoritmo nunca ve los valores, solo las respuestas, así que su salida es una **posición**, "$A[i]$" o "$B[j]$". Dos entradas con medianas en posiciones distintas no pueden terminar en la misma hoja.
+**Hay $2n$ salidas posibles.** Cualquiera de los $2n$ elementos puede ser la mediana. Para que $A[i]$ lo sea, alcanza con un intercalado donde $A[i]$ tenga debajo exactamente $i$ elementos de $A$ y $n-1-i$ de $B$, y eso es posible porque $0 \le n-1-i \le n-1$. Igual para $B[j]$. El algoritmo nunca ve los valores, solo las respuestas, así que su salida es una **posición**: $A[i]$ o $B[j]$. Dos entradas con medianas en posiciones distintas no pueden terminar en la misma hoja.
 
-**El árbol es binario en esas entradas.** Restringimos a entradas con los $2n$ valores distintos. Ahí ninguna comparación entre $A$ y $B$ responde "$=$", y las comparaciones dentro de un arreglo tienen respuesta conocida. Las ejecuciones viven en un árbol binario con al menos $2n$ hojas, que tiene altura al menos $\lceil\log_2 2n\rceil$ (C5, Lema 1). $\blacksquare$
+**El árbol es binario en esas entradas.** Restringimos a entradas con los $2n$ valores distintos. Ahí ninguna comparación entre $A$ y $B$ responde $=$, y las comparaciones dentro de un arreglo tienen respuesta conocida. Las ejecuciones viven en un árbol binario con al menos $2n$ hojas, que tiene altura al menos $\lceil\log_2 2n\rceil$ (C5, Lema 1). $\blacksquare$
 
 **Corolario (optimalidad exacta).** El algoritmo de la escalera hace exactamente $\lceil\log_2 2n\rceil$ comparaciones en el peor caso, para todo $n$.
 
@@ -136,7 +142,7 @@ La columna "salidas posibles" confirma que los $2n$ elementos aparecen como medi
 
 ![Peor caso contra la cota](figuras/ejercicio-07-peor-caso.png)
 
-*Figura 2. Peor caso exacto sobre todos los intercalados. La escalera (azul) cae sobre la cota en cada $n$. El clásico (naranja) sube una comparación en las potencias de 2.*
+**Figura 2.** Peor caso exacto sobre todos los intercalados. La escalera (azul) cae sobre la cota en cada $n$. El clásico (naranja) sube una comparación en las potencias de 2.
 
 **Una cota de información que sí cierra.** En la C5, §4 la información se quedaba corta para el máximo y el segundo mayor, porque ahí el trabajo estaba en verificar la respuesta. Acá cierra exactamente: hay $2n$ respuestas, y cada comparación de la escalera parte el conjunto de respuestas todavía posibles por la mitad. Es la búsqueda binaria del ejercicio 2, sobre una sucesión que no está escrita en ningún arreglo y que hubo que descubrir.
 

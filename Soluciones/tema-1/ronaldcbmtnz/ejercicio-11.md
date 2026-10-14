@@ -20,7 +20,9 @@
 
 **Algoritmo.** Se llena una tabla $D$ de $n+1$ filas y $W+1$ columnas:
 
-$$D[0][c] = 0, \qquad D[i][c] = \begin{cases} \max\big(D[i-1][c],\ v_i + D[i-1][c-w_i]\big) & \text{si } w_i \le c,\\ D[i-1][c] & \text{si } w_i > c. \end{cases}$$
+```math
+D[0][c] = 0, \qquad D[i][c] = \begin{cases} \max\big(D[i-1][c],\ v_i + D[i-1][c-w_i]\big) & \text{si } w_i \le c,\\ D[i-1][c] & \text{si } w_i > c. \end{cases}
+```
 
 La respuesta es $D[n][W]$. Para recuperar el conjunto se recorre la tabla hacia atrás desde $(n, W)$: si $D[i][c] \ne D[i-1][c]$, el objeto $i$ está en la solución y se sigue en $(i-1, c-w_i)$; si no, se sigue en $(i-1, c)$.
 
@@ -53,7 +55,7 @@ Sea $\mathrm{OPT}(i, c)$ el mayor valor de un subconjunto de los objetos $1,\dot
 
 **Teorema 1.** Para todo $0 \le i \le n$ y $0 \le c \le W$, $D[i][c] = \mathrm{OPT}(i, c)$. En particular, $D[n][W]$ es el óptimo.
 
-*Demostración.* Invariante: *al terminar de calcular la fila $i$, $D[i][c] = \mathrm{OPT}(i,c)$ para todo $c$.*
+*Demostración.* Invariante: al terminar de calcular la fila $i$, vale $D[i][c] = \mathrm{OPT}(i,c)$ para todo $c$.
 
 - **Inicialización** ($i = 0$). Sin objetos, el único subconjunto es el vacío, así que $\mathrm{OPT}(0, c) = 0 = D[0][c]$.
 - **Mantenimiento.** Supongamos que la fila $i-1$ cumple el invariante y fijemos $c$. Sea $S$ un subconjunto óptimo para $(i, c)$.
@@ -63,7 +65,7 @@ Sea $\mathrm{OPT}(i, c)$ el mayor valor de un subconjunto de los objetos $1,\dot
   En los dos casos $\mathrm{OPT}(i,c)$ es a lo sumo el máximo de las opciones disponibles. Al revés, cada opción es el valor de un subconjunto factible para $(i,c)$: un óptimo de $(i-1,c)$, o un óptimo de $(i-1, c-w_i)$ más el objeto $i$, que pesa a lo sumo $(c - w_i) + w_i = c$. Así que $\mathrm{OPT}(i,c)$ es exactamente ese máximo, que por hipótesis de inducción es lo que el algoritmo escribe en $D[i][c]$.
 - **Conclusión.** Con $i = n$ y $c = W$, $D[n][W] = \mathrm{OPT}(n, W)$. $\blacksquare$
 
-**La reconstrucción también es correcta.** Su invariante es: *el valor de los objetos ya elegidos más $D[i][c]$ es $D[n][W]$, y su peso más $c$ es a lo sumo $W$.* Al empezar, con $(n, W)$ y nada elegido, vale.
+**La reconstrucción también es correcta.** Su invariante es: el valor de los objetos ya elegidos más $D[i][c]$ es $D[n][W]$, y su peso más $c$ es a lo sumo $W$. Al empezar, con $(n, W)$ y nada elegido, vale.
 
 - Si $D[i][c] = D[i-1][c]$, se pasa a $(i-1, c)$ sin elegir nada y el invariante se conserva.
 - Si $D[i][c] \ne D[i-1][c]$, el máximo de la recurrencia vino de la segunda opción, así que $w_i \le c$ y $D[i][c] = v_i + D[i-1][c-w_i]$. Elegir $i$ suma $v_i$ al valor elegido y le resta $v_i$ a $D$, suma $w_i$ al peso y le resta $w_i$ a $c$: el invariante se conserva.
@@ -74,7 +76,7 @@ Al llegar a $i = 0$, $D[0][c] = 0$: el valor elegido es $D[n][W]$ y el peso es a
 
 ## 3. Costo
 
-**Proposición 2.** En **toda** entrada, el algoritmo evalúa la recurrencia exactamente $n\,(W+1)$ veces. Con aritmética de costo 1, el tiempo es $\Theta(n\,(W+1))$ y la memoria es $\Theta(n\,(W+1))$, o $\Theta(W)$ si solo se quiere el valor y se guarda una fila.
+**Proposición 2.** En **toda** entrada, el algoritmo evalúa la recurrencia exactamente $n\ (W+1)$ veces. Con aritmética de costo 1, el tiempo es $\Theta(n\ (W+1))$ y la memoria es $\Theta(n\ (W+1))$, o $\Theta(W)$ si solo se quiere el valor y se guarda una fila.
 
 *Demostración.* Los dos ciclos anidados recorren $i = 1..n$ y $c = 0..W$ sin salidas tempranas, y cada vuelta hace un número constante de operaciones. La reconstrucción agrega $O(n)$. $\blacksquare$
 
@@ -86,7 +88,9 @@ Si los números no caben en una palabra, cada suma o comparación de valores cue
 
 **Definición.** Con $\mathrm{bits}(x) = \lfloor\log_2 x\rfloor + 1$ para $x \ge 1$, y $\mathrm{bits}(0) = 1$:
 
-$$s = \mathrm{bits}(n) + \sum_{i=1}^{n}\big(\mathrm{bits}(w_i) + \mathrm{bits}(v_i)\big) + \mathrm{bits}(W).$$
+```math
+s = \mathrm{bits}(n) + \sum_{i=1}^{n}\big(\mathrm{bits}(w_i) + \mathrm{bits}(v_i)\big) + \mathrm{bits}(W).
+```
 
 Una codificación real necesita separar los números, por ejemplo duplicando cada bit y usando `01` como separador. Eso da un tamaño entre $s$ y $4s$, y un factor constante no cambia si algo es polinomial o exponencial: $2^{\Theta(s)}$ sigue siendo $2^{\Theta(s)}$.
 
@@ -129,14 +133,14 @@ Los bits que se gastan en *más objetos* cuestan polinomialmente, y los que se g
 
 ![Costo contra tamaño en bits](figuras/ejercicio-11-costo-vs-bits.png)
 
-*Figura 1. Logaritmo de las operaciones contra el tamaño de la entrada. Las exponenciales son rectas: pendiente 1 si todos los bits están en $W$, $1/2$ para la primalidad por división y $\approx 1/17$ con ocho objetos de $b$ bits. Con números de 4 bits y cada vez más objetos, la curva se aplana: es $\Theta(s^2)$.*
+**Figura 1.** Logaritmo de las operaciones contra el tamaño de la entrada. Las exponenciales son rectas: pendiente 1 si todos los bits están en $W$, $1/2$ para la primalidad por división y $\approx 1/17$ con ocho objetos de $b$ bits. Con números de 4 bits y cada vez más objetos, la curva se aplana: es $\Theta(s^2)$.
 
 **Proposición 4 (lo que sí es polinomial).**
 
 1. Si los números se escriben en unario, con tamaño $s_u = n + \sum w_i + \sum v_i + W$, el costo es a lo sumo $s_u^2$.
-2. Restringido a entradas con $W \le p(n)$ para un polinomio no decreciente $p$, el costo es a lo sumo $s\,(p(s)+1)$, polinomial en $s$.
+2. Restringido a entradas con $W \le p(n)$ para un polinomio no decreciente $p$, el costo es a lo sumo $s\ (p(s)+1)$, polinomial en $s$.
 
-*Demostración.* (1) Si $n = 0$ no hay celdas. Si $n \ge 1$, entonces $n \le s_u$ y $W + 1 \le n + W \le s_u$, así que $n(W+1) \le s_u^2$. (2) $n(W+1) \le n\,(p(n)+1) \le s\,(p(s)+1)$, porque $n \le s$. $\blacksquare$
+*Demostración.* (1) Si $n = 0$ no hay celdas. Si $n \ge 1$, entonces $n \le s_u$ y $W + 1 \le n + W \le s_u$, así que $n(W+1) \le s_u^2$. (2) $n(W+1) \le n\ (p(n)+1) \le s\ (p(s)+1)$, porque $n \le s$. $\blacksquare$
 
 Eso es exactamente lo que significa **pseudopolinomial** (C1, §8): polinomial en el valor de los números, no en sus bits. La Figura 1 lo muestra con la curva amarilla, objetos de 4 bits con $W \le 15n$, que crece como $s^2$.
 
@@ -154,11 +158,11 @@ La tabla de la C1, §8, rehecha para la mochila con $n = 100$ objetos y capacida
 
 Con 32 bits el tiempo todavía se aguanta (siete minutos), pero la tabla completa pide 3,5 TB. Como dice la C1, §6, la memoria se acaba antes que la paciencia. Con 64 bits, que es el tamaño de un `long` cualquiera, no hay nada que hacer.
 
-**Medido en una computadora real.** La Figura 2 mide el tiempo de la mochila (20 objetos con pesos y valores de $b$ bits, una sola fila en numpy) y el de la primalidad por división (el mayor primo de $b$ bits). Las pendientes ajustadas son $\times 2{,}14$ por bit para la mochila y $\times 1{,}43 \approx \sqrt 2$ por bit para la primalidad. La de la mochila se ajusta desde $b = 15$, cuando la fila ya no cabe en la caché (ver más abajo). En cinco corridas quedó entre $\times 2{,}05$ y $\times 2{,}14$, y la de la primalidad entre $\times 1{,}42$ y $\times 1{,}43$. Es lo que predicen $n\,2^b$ y $2^{b/2}$. La mochila queda un poco por encima de 2 porque el tiempo por celda todavía sube algo al crecer la fila: de 1,8 a 2,4 ns entre 1,25 MB y 8 MB, en la tabla de más abajo.
+**Medido en una computadora real.** La Figura 2 mide el tiempo de la mochila (20 objetos con pesos y valores de $b$ bits, una sola fila en numpy) y el de la primalidad por división (el mayor primo de $b$ bits). Las pendientes ajustadas son $\times 2{,}14$ por bit para la mochila y $\times 1{,}43 \approx \sqrt 2$ por bit para la primalidad. La de la mochila se ajusta desde $b = 15$, cuando la fila ya no cabe en la caché (ver más abajo). En cinco corridas quedó entre $\times 2{,}05$ y $\times 2{,}14$, y la de la primalidad entre $\times 1{,}42$ y $\times 1{,}43$. Es lo que predicen $n\ 2^b$ y $2^{b/2}$. La mochila queda un poco por encima de 2 porque el tiempo por celda todavía sube algo al crecer la fila: de 1,8 a 2,4 ns entre 1,25 MB y 8 MB, en la tabla de más abajo.
 
 ![Tiempos medidos](figuras/ejercicio-11-tiempos.png)
 
-*Figura 2. Tiempos reales en escala $\log_2$. El salto de la mochila, que en esta corrida cayó entre $b = 14$ y $b = 15$, aparece cuando la fila de trabajo deja de caber en la caché L2 del procesador, como comprueba la Figura 3. El modelo RAM no lo ve, porque supone que todo acceso a memoria cuesta lo mismo. Es un factor constante, así que no cambia la pendiente, que es lo que el análisis predice. Toda cota viene con un modelo.*
+**Figura 2.** Tiempos reales en escala $\log_2$. El salto de la mochila, que en esta corrida cayó entre $b = 14$ y $b = 15$, aparece cuando la fila de trabajo deja de caber en la caché L2 del procesador, como comprueba la Figura 3. El modelo RAM no lo ve, porque supone que todo acceso a memoria cuesta lo mismo. Es un factor constante, así que no cambia la pendiente, que es lo que el análisis predice. Toda cota viene con un modelo.
 
 **El salto es de la caché: la comprobación.** Si el salto viene de la memoria, tiene que depender de los **bytes** de la fila, no de $b$ ni de cuántas celdas tiene. Para separar las dos cosas corrimos la misma programación dinámica sobre filas de distintos tamaños, primero con enteros de 64 bits y después con enteros de 32, que meten el doble de celdas en los mismos bytes. Si el salto dependiera de la cantidad de celdas, con int32 aparecería en la mitad de los bytes. Si es la caché, aparece en los mismos bytes. Con 20 objetos, mínimo de 9 corridas por punto (Tabla 6 del script):
 
@@ -183,7 +187,7 @@ Los dos tipos saltan en el mismo lugar, entre 1 MB y 1,25 MB, aunque con int32 e
 
 ![Tiempo por celda según el tamaño de la fila](figuras/ejercicio-11-cache.png)
 
-*Figura 3. Tiempo por celda de la mochila según el tamaño de la fila, con enteros de 64 y de 32 bits. Los dos saltan al pasar de 1 MB, el tamaño de la caché L2 de un núcleo, aunque con 32 bits eso es el doble de celdas. Las líneas punteadas marcan dónde cae la fila de la Figura 2 con $b = 13$ y $b = 14$.*
+**Figura 3.** Tiempo por celda de la mochila según el tamaño de la fila, con enteros de 64 y de 32 bits. Los dos saltan al pasar de 1 MB, el tamaño de la caché L2 de un núcleo, aunque con 32 bits eso es el doble de celdas. Las líneas punteadas marcan dónde cae la fila de la Figura 2 con $b = 13$ y $b = 14$.
 
 ## 6. ¿En qué se parece a la primalidad por división?
 
@@ -191,7 +195,7 @@ Los dos tipos saltan en el mismo lugar, entre 1 MB y 1,25 MB, aunque con int32 e
 |---|---|---|
 | entrada | un número $N$ de $b$ bits | $n$ objetos y una capacidad $W$ de $b$ bits |
 | costo en función del valor | $\Theta(\sqrt N)$ divisiones (peor caso: $N$ primo) | $\Theta(nW)$ celdas, en toda entrada |
-| costo en función de los bits | $\Theta(2^{b/2})$ | $\Theta(n\,2^{b})$ |
+| costo en función de los bits | $\Theta(2^{b/2})$ | $\Theta(n\ 2^{b})$ |
 | un bit más | $\times\sqrt 2$ | $\times 2$ |
 | el ciclo culpable | `while d * d <= n` | `for c in range(W + 1)` |
 | con los números en unario | polinomial | polinomial (Proposición 4) |
@@ -199,7 +203,7 @@ Los dos tipos saltan en el mismo lugar, entre 1 MB y 1,25 MB, aunque con int32 e
 
 **El diagnóstico común.** En los dos algoritmos el número de vueltas de un ciclo es un **valor** que viene en la entrada, no una **cantidad** de cosas en la entrada. Un número de $b$ bits puede valer $2^b$, así que un ciclo que cuenta hasta ese valor es exponencial en $b$ aunque se escriba como un solo `for`. Es el error que el resumen del tema atribuye a la C1: "llamar polinomial a algo exponencial en bits". Queda una regla práctica: cuando un costo depende de un número de la entrada y no de cuántos datos hay, hay que preguntarse cuántos bits ocupa ese número.
 
-**El costo de peor caso de la primalidad, verificado.** El mayor primo de $b$ bits hace $\lfloor\sqrt p\rfloor - 1$ divisiones. El código lo comprueba contra el algoritmo de la conferencia para $b \le 24$, reproduce los 8, 99, 999 y 31 621 divisiones de la C1, §1, y da 254 divisiones para 16 bits, 65 534 para 32 y 4 294 967 294 para 64 (el primo $18\,446\,744\,073\,709\,551\,557$).
+**El costo de peor caso de la primalidad, verificado.** El mayor primo de $b$ bits hace $\lfloor\sqrt p\rfloor - 1$ divisiones. El código lo comprueba contra el algoritmo de la conferencia para $b \le 24$, reproduce los 8, 99, 999 y 31 621 divisiones de la C1, §1, y da 254 divisiones para 16 bits, 65 534 para 32 y 4 294 967 294 para 64 (el primo $18\ 446\ 744\ 073\ 709\ 551\ 557$).
 
 **Las diferencias, que son las que importan.**
 
@@ -223,12 +227,12 @@ Los dos tipos saltan en el mismo lugar, entre 1 MB y 1,25 MB, aunque con int32 e
 | `test_familia_capacidad_es_exponencial` | Teorema 3: $s = b+3$ y celdas $= 2^{s-3}$, hasta $b = 300$ |
 | `test_familia_dos_objetos_resiste_el_recorte` | la observación: $s = 3b+5$ y el recorte no ayuda |
 | `test_recorte_no_cambia_la_respuesta` | $\min(W, \sum w_i)$ da la misma respuesta |
-| `test_cotas_superiores` | celdas $\le s\,2^s$ y celdas $\le s_u^2$ (Proposición 4.1) |
+| `test_cotas_superiores` | celdas $\le s\ 2^s$ y celdas $\le s_u^2$ (Proposición 4.1) |
 | `test_polinomial_con_numeros_acotados` | Proposición 4.2 con pesos de 4 bits, celdas $\le s^2$ |
 | `test_reparto_del_mismo_tamano` | la tabla del reparto: más objetos y menos bits, más barato |
 | `test_un_bit_mas` | un bit en $W$ duplica; dos bits en $N$ duplican |
 | `test_es_primo_reproduce_la_conferencia_1` | 8, 99, 999 y 31 621 divisiones |
-| `test_miller_rabin_coincide_con_la_division` | para $N < 30\,000$, y con pseudoprimos fuertes y números de Carmichael |
+| `test_miller_rabin_coincide_con_la_division` | para $N < 30\ 000$, y con pseudoprimos fuertes y números de Carmichael |
 | `test_peor_caso_de_la_primalidad` | $\lfloor\sqrt p\rfloor - 1$ divisiones, y que no hay primos entre $p$ y $2^b$ |
 
 Para reproducir todo (Python 3, con `numpy` y `matplotlib`):

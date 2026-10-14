@@ -27,7 +27,9 @@
 
 Sumando sobre los $n$ accesos y telescopiando el potencial:
 
-$$\sum_{i=1}^{n} c_i \;=\; \sum_{i=1}^{n}\hat c_i - (\Phi_n - \Phi_0) \;\le\; \sum_{i=1}^{n}\Big(3\big(\log_2 n - r(x_i)\big) + 1\Big) + \Phi_0 - \Phi_n.$$
+```math
+\sum_{i=1}^{n} c_i \;=\; \sum_{i=1}^{n}\hat c_i - (\Phi_n - \Phi_0) \;\le\; \sum_{i=1}^{n}\Big(3\big(\log_2 n - r(x_i)\big) + 1\Big) + \Phi_0 - \Phi_n.
+```
 
 La cuenta de la §5 usa tres simplificaciones:
 
@@ -37,7 +39,9 @@ La cuenta de la §5 usa tres simplificaciones:
 
 Con eso,
 
-$$\sum_{i=1}^n c_i \;\le\; n\,(3\log_2 n + 1) + \log_2 n! \;\le\; 4n\log_2 n + n.$$
+```math
+\sum_{i=1}^n c_i \;\le\; n\,(3\log_2 n + 1) + \log_2 n! \;\le\; 4n\log_2 n + n.
+```
 
 El término $\log_2 n!$ es la deuda del camino: el árbol empieza con potencial alto y los primeros accesos la cobran. La C4 dice que en este caso "la condición $\Phi_m \ge \Phi_0$ no se cumple, y la demostración lo resuelve pagando $\Phi_0$ aparte". Eso es lo que hicimos.
 
@@ -56,7 +60,7 @@ Las tres columnas de splay son **idénticas**, y no es casualidad.
 
 **Teorema 2 (la pasada rehace el camino).** Después de acceder a la clave $k$, para $k = 1, \dots, n$:
 
-**(I$_k$)** la raíz es $k$, su subárbol izquierdo es el camino $k-1 \to k-2 \to \dots \to 1$, donde cada nodo tiene solo hijo izquierdo, y su subárbol derecho $R_k$ tiene las claves $k+1, \dots, n$.
+**$(\mathrm{I}_k)$** la raíz es $k$, su subárbol izquierdo es el camino $k-1 \to k-2 \to \dots \to 1$, donde cada nodo tiene solo hijo izquierdo, y su subárbol derecho $R_k$ tiene las claves $k+1, \dots, n$.
 
 En particular, después de acceder a $n$ el árbol es **exactamente el camino inicial**.
 
@@ -64,7 +68,7 @@ En particular, después de acceder a $n$ el árbol es **exactamente el camino in
 
 **Base.** Después de acceder a 1, la raíz es 1. Como 1 es la mínima, su subárbol izquierdo es vacío, que es el camino de $0$ nodos.
 
-**Paso.** Supongamos (I$_k$) con $k < n$. La clave $k+1$ es la mínima de $R_k$. El camino desde la raíz baja una vez a la derecha, a la raíz $r_0$ de $R_k$, y desde ahí siempre a la izquierda hasta $k+1$, que no tiene hijo izquierdo.
+**Paso.** Supongamos $(\mathrm{I}_k)$ con $k < n$. La clave $k+1$ es la mínima de $R_k$. El camino desde la raíz baja una vez a la derecha, a la raíz $r_0$ de $R_k$, y desde ahí siempre a la izquierda hasta $k+1$, que no tiene hijo izquierdo.
 
 - **Mientras $k+1$, su padre y su abuelo están dentro de $R_k$**, los pasos del splay son zig-zig hacia la izquierda. Solo tocan nodos de $R_k$, así que la raíz $k$ y su camino izquierdo no cambian. Además, en un zig-zig $x$ conserva su subárbol izquierdo (el $A$ de la Figura 2 de la C4), que acá es vacío. Y $x$ ocupa el lugar del antiguo abuelo: un hijo izquierdo, salvo que el abuelo fuera $r_0$.
 - **El último paso involucra a la raíz $k$**, y hay dos formas:
@@ -73,20 +77,20 @@ En particular, después de acceder a $n$ el árbol es **exactamente el camino in
 
   No puede ser zig-zig, porque $k+1$ y $p$ tendrían que estar del mismo lado.
 
-En los dos casos, el subárbol izquierdo de la nueva raíz $k+1$ es $k \to k-1 \to \dots \to 1$, todos sin hijo derecho, y eso es (I$_{k+1}$). Con $k = n$, $R_n$ es vacío y el árbol es el camino $n \to n-1 \to \dots \to 1$. $\blacksquare$
+En los dos casos, el subárbol izquierdo de la nueva raíz $k+1$ es $k \to k-1 \to \dots \to 1$, todos sin hijo derecho, y eso es $(\mathrm{I}_{k+1})$. Con $k = n$, $R_n$ es vacío y el árbol es el camino $n \to n-1 \to \dots \to 1$. $\blacksquare$
 
 **Corolarios.**
 
 1. $\Phi_n = \Phi_0 = \log_2 n!$. El término $\Phi_0 - \Phi_n$ de la sección 2 vale **0**, y el costo real total es igual al amortizado total.
 2. Cada ronda empieza desde el mismo árbol, así que cuesta exactamente lo mismo. Por eso medir tres rondas, como la C4, §6, da lo mismo que medir una.
 
-La prueba `test_invariante_de_la_pasada` vigila (I$_k$) después de cada acceso para varios $n$, y `test_las_rondas_son_identicas` compara las rondas una por una.
+La prueba `test_invariante_de_la_pasada` vigila $(\mathrm{I}_k)$ después de cada acceso para varios $n$, y `test_las_rondas_son_identicas` compara las rondas una por una.
 
 ## 4. ¿Es ajustada la cota?
 
 **No.** Una sola pasada, comparada con la cota de la sección 2:
 
-| $n$ | costo real | real $/\,n$ | cota $n(3\log_2 n+1) + \log_2 n!$ | cota $/$ real | primer acceso |
+| $n$ | costo real | real $/\ n$ | cota $n(3\log_2 n+1) + \log_2 n!$ | cota $/$ real | primer acceso |
 |---|---|---|---|---|---|
 | 100 | 416 | 4,160 | 2 618 | 6,3 | 99 |
 | 1 000 | 4 374 | 4,374 | 39 427 | 9,0 | 999 |
@@ -100,7 +104,7 @@ El costo real por acceso se estabiliza cerca de 4,41, mientras la cota por acces
 - **Cota inferior.** El primer acceso solo ya cuesta $n - 1$, y cada uno de los demás al menos 1, así que el total es al menos $2n - 2$.
 - **Cota superior.** Tarjan demostró en 1985 el **teorema del acceso secuencial**: recorrer en orden todas las claves de un splay tree cuesta $O(n)$, desde **cualquier** árbol inicial. Lo citamos sin demostrarlo, como la C4 hace con la cota de Tarjan para union-find.
 
-Las mediciones dan $\approx 4{,}41\,n$ y se ve de dónde sale. Los primeros accesos cuestan $n-1,\ n/2,\ n/4,\ n/8, \dots$, porque cada splay deja el fondo del árbol a la mitad de profundidad, como explica la C4, §6. Con $n = 2^{14}$ son 16383, 8192, 4097, 2048, 1027, 513, …, y los primeros 14 suman 32 790, casi exactamente $2n$. El resto de la pasada cuesta unas 2,4 rotaciones por acceso.
+Las mediciones dan $\approx 4{,}41\ n$ y se ve de dónde sale. Los primeros accesos cuestan $n-1,\ n/2,\ n/4,\ n/8, \dots$, porque cada splay deja el fondo del árbol a la mitad de profundidad, como explica la C4, §6. Con $n = 2^{14}$ son 16383, 8192, 4097, 2048, 1027, 513, …, y los primeros 14 suman 32 790, casi exactamente $2n$. El resto de la pasada cuesta unas 2,4 rotaciones por acceso.
 
 **Dónde está la holgura.** Medimos el potencial en cada acceso:
 
@@ -117,7 +121,7 @@ Como $\Phi_{\text{final}} = \Phi_0$ (Teorema 2), el amortizado total es igual al
 
 ![Las dos capas de holgura y el potencial](figuras/ejercicio-13-acceso-a-acceso.png)
 
-*Figura 1. Izquierda: el costo real acumulado (naranja) sube unos $2n$ en los primeros diez accesos ($n - 1$ el primero, después $n/2$, $n/4$, …) y luego crece despacio; la suma de las cotas del lema (verde) y la cota de la §5 (gris) quedan muy por encima al final. Derecha: los primeros accesos descargan el potencial del camino. El primero lo parte a la mitad (de 8769 a 4397 con $n = 1024$), desde el cuarto queda por debajo de la quinta parte de $\log_2 n!$, y en el octavo toca su mínimo, el 16 %. Después la pasada lo vuelve a cargar linealmente hasta el mismo valor. Por eso real y amortizado coinciden al final.*
+**Figura 1.** Izquierda: el costo real acumulado (naranja) sube unos $2n$ en los primeros diez accesos ($n - 1$ el primero, después $n/2$, $n/4$, …) y luego crece despacio; la suma de las cotas del lema (verde) y la cota de la §5 (gris) quedan muy por encima al final. Derecha: los primeros accesos descargan el potencial del camino. El primero lo parte a la mitad (de 8769 a 4397 con $n = 1024$), desde el cuarto queda por debajo de la quinta parte de $\log_2 n!$, y en el octavo toca su mínimo, el 16 %. Después la pasada lo vuelve a cargar linealmente hasta el mismo valor. Por eso real y amortizado coinciden al final.
 
 **El lema no es flojo en general.** Con accesos uniformes al azar desde el mismo camino, el costo por acceso sí crece como $\log n$:
 
@@ -132,7 +136,7 @@ Y ningún árbol binario de búsqueda puede hacerlo mejor en ese caso. Un árbol
 
 ![Rotaciones por acceso](figuras/ejercicio-13-por-acceso.png)
 
-*Figura 2. Rotaciones por acceso. En orden (azul) es plano en $\approx 4{,}4$. Al azar (naranja) crece como $\log n$. La cota del lema más la §5 (gris) crece como $4\log_2 n$.*
+**Figura 2.** Rotaciones por acceso. En orden (azul) es plano en $\approx 4{,}4$. Al azar (naranja) crece como $\log n$. La cota del lema más la §5 (gris) crece como $4\log_2 n$.
 
 **Comparación con subir a la raíz.** La C4, §6 midió $n/2$ rotaciones por acceso para subir a la raíz, que es $\Theta(n^2)$ en total (ejercicio 4 de la C4). Ahí ni siquiera vale el lema, porque su demostración necesita que el zig-zig rote primero el padre. Splay está a un factor $\log n$ de su cota y subir a la raíz a un factor $n$ del splay.
 
@@ -144,7 +148,7 @@ Y ningún árbol binario de búsqueda puede hacerlo mejor en ese caso. Un árbol
 | prueba | qué comprueba |
 |---|---|
 | `test_splay_preserva_el_arbol_de_busqueda` | orden, punteros a padre y tamaño después de cada acceso al azar |
-| `test_invariante_de_la_pasada` | (I$_k$) después de cada acceso, y que se vuelve al camino |
+| `test_invariante_de_la_pasada` | $(\mathrm{I}_k)$ después de cada acceso, y que se vuelve al camino |
 | `test_las_rondas_son_identicas` | corolario 2: las tres rondas cuestan exactamente lo mismo |
 | `test_lema_de_acceso_vigilado` | el lema en cada acceso, $\Phi_{\text{final}} = \Phi_0$ y real $\le$ cota |
 | `test_potencial_del_camino` | $\Phi_0 = \log_2 n!$ |

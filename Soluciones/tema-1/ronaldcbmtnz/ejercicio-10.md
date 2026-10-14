@@ -33,7 +33,9 @@ Usamos dos modelos, y la mitad del ejercicio es no confundirlos:
 
 *Demostración.* Para $i < j$ la diferencia se descompone en huecos consecutivos, todos $\ge 0$ porque la sucesión está ordenada:
 
-$$y_j - y_i = \sum_{k=i}^{j-1} (y_{k+1} - y_k) \;\ge\; y_{i+1} - y_i.$$
+```math
+y_j - y_i = \sum_{k=i}^{j-1} (y_{k+1} - y_k) \;\ge\; y_{i+1} - y_i.
+```
 
 Así que el mínimo sobre todos los pares es al menos el mínimo sobre los consecutivos. Como los consecutivos son pares, también es a lo sumo ese mínimo. $\blacksquare$
 
@@ -58,7 +60,7 @@ La herramienta de la C5, §3, cuenta respuestas posibles. Distinción de element
 
 **Lema (las hojas de un árbol lineal son convexas).** El conjunto $R_\ell \subseteq \mathbb R^n$ de las entradas que llegan a una hoja $\ell$ es convexo.
 
-*Demostración.* Una entrada llega a $\ell$ si y solo si cada prueba del camino de la raíz a $\ell$ le da el signo de ese camino. Cada condición "$f(x) < 0$", "$f(x) = 0$" o "$f(x) > 0$", con $f$ afín, define un semiespacio abierto o un hiperplano, y los dos son convexos. $R_\ell$ es la intersección de esos conjuntos, y una intersección de convexos es convexa. $\blacksquare$
+*Demostración.* Una entrada llega a $\ell$ si y solo si cada prueba del camino de la raíz a $\ell$ le da el signo de ese camino. Cada condición $f(x) < 0$, $f(x) = 0$ o $f(x) > 0$, con $f$ afín, define un semiespacio abierto o un hiperplano, y los dos son convexos. $R_\ell$ es la intersección de esos conjuntos, y una intersección de convexos es convexa. $\blacksquare$
 
 **Teorema 3 (distinción de elementos en árboles lineales).** Todo árbol de decisión lineal que decide si $n$ números son todos distintos tiene profundidad al menos $\lceil\log_3 n!\rceil$.
 
@@ -66,19 +68,23 @@ La herramienta de la C5, §3, cuenta respuestas posibles. Distinción de element
 
 Supongamos que $p = p^\pi$ y $q = p^\sigma$ llegan a la misma hoja $\ell$. Como $\pi \ne \sigma$, hay dos índices $i, j$ que quedan en orden distinto: $p_i < p_j$ y $q_i > q_j$. La función
 
-$$g(t) = (1-t)(p_i - p_j) + t\,(q_i - q_j)$$
+```math
+g(t) = (1-t)(p_i - p_j) + t\,(q_i - q_j)
+```
 
-es continua, negativa en $t=0$ y positiva en $t=1$, así que se anula en algún $t^\ast \in (0,1)$. El punto $z = (1-t^\ast)\,p + t^\ast q$ tiene $z_i = z_j$: tiene repetidos. Pero $z$ está en el segmento entre $p$ y $q$, que están en $R_\ell$, y $R_\ell$ es convexo, así que $z$ también llega a $\ell$. El árbol le contesta "todos distintos" y se equivoca. Contradicción.
+es continua, negativa en $t=0$ y positiva en $t=1$, así que se anula en algún $t^\ast \in (0,1)$. El punto $z = (1-t^\ast)\ p + t^\ast q$ tiene $z_i = z_j$: tiene repetidos. Pero $z$ está en el segmento entre $p$ y $q$, que están en $R_\ell$, y $R_\ell$ es convexo, así que $z$ también llega a $\ell$. El árbol le contesta "todos distintos" y se equivoca. Contradicción.
 
 Así que las $n!$ entradas $p^\pi$ llegan a $n!$ hojas distintas. Un árbol ternario de profundidad $h$ tiene a lo sumo $3^h$ hojas (el Lema 1 de la C5 con tres ramas), así que $3^h \ge n!$ y $h \ge \lceil\log_3 n!\rceil$. $\blacksquare$
 
 ![Las seis cámaras para n = 3](figuras/ejercicio-10-camaras.png)
 
-*Figura 1. Con $n=3$, cortando $\mathbb R^3$ con el plano $x_1+x_2+x_3=0$. Los planos $x_i = x_j$ separan las $3! = 6$ regiones donde la entrada tiene un orden fijo. Cualquier segmento entre dos órdenes distintos cruza un plano de repetidos. Si una hoja convexa contuviera a $p$ y a $q$, contendría al punto rojo $z$.*
+**Figura 1.** Con $n=3$, cortando $\mathbb R^3$ con el plano $x_1+x_2+x_3=0$. Los planos $x_i = x_j$ separan las $3! = 6$ regiones donde la entrada tiene un orden fijo. Cualquier segmento entre dos órdenes distintos cruza un plano de repetidos. Si una hoja convexa contuviera a $p$ y a $q$, contendría al punto rojo $z$.
 
-Con la cota de la C5 (Lema 3), $\log_2 n! \ge n\log_2 n - 1{,}443\,n$, y dividiendo entre $\log_2 3$:
+Con la cota de la C5 (Lema 3), $\log_2 n! \ge n\log_2 n - 1{,}443\ n$, y dividiendo entre $\log_2 3$:
 
-$$\lceil\log_3 n!\rceil \;\ge\; \frac{n\log_2 n - 1{,}443\,n}{\log_2 3} = \Omega(n\log n).$$
+```math
+\lceil\log_3 n!\rceil \;\ge\; \frac{n\log_2 n - 1{,}443\,n}{\log_2 3} = \Omega(n\log n).
+```
 
 Este argumento es de Dobkin y Lipton (1979). Lo demostramos entero porque no usa nada fuera del curso.
 
@@ -94,7 +100,7 @@ Este argumento es de Dobkin y Lipton (1979). Lo demostramos entero porque no usa
 
 ### 3.3 En árboles algebraicos: el teorema de Ben-Or
 
-En un árbol algebraico las hojas ya no son convexas, ni siquiera conexas. Una sola prueba "$x_1^2 - 1 > 0$" manda a la misma rama a $x_1 = -2$ y a $x_1 = 2$, y el segmento entre ellos pasa por $x_1 = 0$, que va a la otra rama. El argumento de arriba se rompe exactamente en el paso de convexidad.
+En un árbol algebraico las hojas ya no son convexas, ni siquiera conexas. Una sola prueba, $x_1^2 - 1 > 0$, manda a la misma rama a $x_1 = -2$ y a $x_1 = 2$, y el segmento entre ellos pasa por $x_1 = 0$, que va a la otra rama. El argumento de arriba se rompe exactamente en el paso de convexidad.
 
 **Teorema 4 (Ben-Or, 1983; citado en la C2, §8).** Distinción de elementos requiere $\Omega(n\log n)$ en árboles de decisión algebraicos.
 
@@ -178,7 +184,7 @@ Hay tres diferencias con la versión del plano:
 
 ![La rejilla en una dimensión](figuras/ejercicio-10-rejilla.png)
 
-*Figura 2. Celdas de largo $\delta$ con a lo sumo un punto cada una. Todo lo que puede mejorar a $\delta$ está en $(x-\delta, x+\delta)$, que cae dentro de la celda de $x$ y sus dos vecinas.*
+**Figura 2.** Celdas de largo $\delta$ con a lo sumo un punto cada una. Todo lo que puede mejorar a $\delta$ está en $(x-\delta, x+\delta)$, que cae dentro de la celda de $x$ y sus dos vecinas.
 
 **Lema 6 (un punto por celda).** Si todos los pares de un conjunto están a distancia al menos $\delta > 0$, no hay dos puntos del conjunto con la misma celda $\lfloor x/\delta\rfloor$.
 
@@ -210,7 +216,9 @@ El código de prueba vigila los dos invariantes después de cada inserción en 4
 
 **Teorema 9 (costo esperado).** Para **toda** entrada, con el orden de inserción uniforme al azar:
 
-$$\mathbb E[\text{reconstrucciones}] \le 2H_n - 3, \qquad \mathbb E[\text{puntos reinsertados}] \le 2(n-2),$$
+```math
+\mathbb E[\text{reconstrucciones}] \le 2H_n - 3, \qquad \mathbb E[\text{puntos reinsertados}] \le 2(n-2),
+```
 
 con igualdad cuando cada subconjunto tiene un único par más cercano (por ejemplo, si todas las distancias son distintas). Aquí $H_n = 1 + \frac12 + \dots + \frac1n$. El costo esperado total es $O(n)$.
 
@@ -221,15 +229,19 @@ con igualdad cuando cada subconjunto tiene un único par más cercano (por ejemp
 
 En los dos casos, a lo sumo 2 puntos de $S_m$ provocan la reconstrucción. Como el orden es una permutación uniforme, condicionado al conjunto $S_m$, el último en llegar es uniforme entre sus $m$ elementos. Así que
 
-$$\Pr[\text{reconstruir en el paso } m] \le \frac{2}{m},$$
+```math
+\Pr[\text{reconstruir en el paso } m] \le \frac{2}{m},
+```
 
 con igualdad cuando el par más cercano de $S_m$ es único. Por linealidad de la esperanza:
 
-$$\mathbb E[\text{reconstrucciones}] \le \sum_{m=3}^{n}\frac2m = 2H_n - 3, \qquad \mathbb E[\text{reinserciones}] \le \sum_{m=3}^{n}\frac2m\cdot m = 2(n-2).$$
+```math
+\mathbb E[\text{reconstrucciones}] \le \sum_{m=3}^{n}\frac2m = 2H_n - 3, \qquad \mathbb E[\text{reinserciones}] \le \sum_{m=3}^{n}\frac2m\cdot m = 2(n-2).
+```
 
 Cada inserción hace 3 consultas y a lo sumo una escritura. El total esperado de accesos a la tabla es a lo sumo $3(n-2) + (n-2) + 2(n-2) + 2 \approx 6n$, que es $O(n)$. $\blacksquare$
 
-Este análisis afina un poco el de la conferencia, por dos lados. Primero, cubre los empates: la conferencia supone que el par es único, y con empates la probabilidad solo puede bajar. Segundo, da la constante exacta. Como $H_n = \ln n + \gamma + O(1/n)$, la esperanza es $2\ln n + 2\gamma - 3 \approx 2\ln n - 1{,}85$, así que el "$\approx 2\ln n$" de la conferencia sobrestima en casi 2. Ese ajuste vale igual en el plano, donde el análisis es el mismo. El 13,3 que mide la C2 para $n = 1000$ con tres semillas es compatible con el valor exacto 11,97, porque con tres corridas el error estándar es de unas 2 reconstrucciones.
+Este análisis afina un poco el de la conferencia, por dos lados. Primero, cubre los empates: la conferencia supone que el par es único, y con empates la probabilidad solo puede bajar. Segundo, da la constante exacta. Como $H_n = \ln n + \gamma + O(1/n)$, la esperanza es $2\ln n + 2\gamma - 3 \approx 2\ln n - 1{,}85$, así que la aproximación $2\ln n$ de la conferencia sobrestima en casi 2. Ese ajuste vale igual en el plano, donde el análisis es el mismo. El 13,3 que mide la C2 para $n = 1000$ con tres semillas es compatible con el valor exacto 11,97, porque con tres corridas el error estándar es de unas 2 reconstrucciones.
 
 **El peor caso sin barajar es $\Theta(n^2)$.** Sea $x_1 = 0$ y $x_{k+1} = x_k + (n-k)$: los huecos, en orden de inserción, son $n-1, n-2, \dots, 1$. Al insertar el punto $k+1$, el hueco nuevo es menor que todos los anteriores, así que $\delta$ baja en cada paso. Hay $n-2$ reconstrucciones y $\sum_{m=3}^{n} m = \frac{n(n+1)}{2} - 3$ reinserciones. Barajando, la misma entrada vuelve a $2H_n - 3$ en promedio:
 
@@ -245,7 +257,7 @@ La garantía del Teorema 9 es para cada entrada fija, en esperanza sobre el azar
 
 **La esperanza exacta, sin azar.** Para comprobar el Teorema 9 sin depender de semillas, la prueba `test_esperanza_exacta_sobre_todos_los_ordenes` toma $x = (0, 1, 3, 7, \dots, 2^{n-1}-1)$, cuyas diferencias $2^j - 2^i$ son todas distintas. Corre la rejilla con **cada una** de las $n!$ órdenes de inserción, para $n \le 7$. Con aritmética racional, el promedio da exactamente $2H_n - 3$ reconstrucciones y exactamente $2(n-2)$ reinserciones. Con todos los huecos iguales ($x = 0, 1, \dots, n-1$), el promedio queda por debajo de $2H_n - 3$, como predice el caso de empates.
 
-**Con entradas grandes al azar** (enteros distintos en $[0, 10^{12})$):
+**Con entradas grandes al azar**, enteros distintos en el intervalo $[0, 10^{12})$:
 
 | $n$ | corridas | reconstrucciones (media ± error) | $2H_n - 3$ | $2\ln n$ | reinserciones $/(n-2)$ |
 |---|---|---|---|---|---|
@@ -259,13 +271,13 @@ Todas las medias están a menos de dos errores estándar de $2H_n - 3$, y las re
 
 ![Reconstrucciones medidas contra la esperanza exacta](figuras/ejercicio-10-reconstrucciones.png)
 
-*Figura 3. La esperanza exacta $2H_n-3$ (azul) pasa por las mediciones; $2\ln n$ (gris) queda siempre casi 2 por encima.*
+**Figura 3.** La esperanza exacta $2H_n-3$ (azul) pasa por las mediciones; $2\ln n$ (gris) queda siempre casi 2 por encima.
 
 **Operaciones por punto.** En las operaciones de cada modelo, las pruebas de signo del Teorema 2 crecen como $\log_2 n$ por punto, por encima de la cota $\log_3(n!)/n$. Los accesos de la rejilla quedan en unos 6 por punto, que es la cuenta $3 + 1 + 2$ del Teorema 9.
 
 ![Operaciones por punto](figuras/ejercicio-10-operaciones.png)
 
-*Figura 4. Por punto: el árbol de decisión, y la cota que lo obliga, crecen con $\log n$; la rejilla se queda constante.*
+**Figura 4.** Por punto: el árbol de decisión, y la cota que lo obliga, crecen con $\log n$; la rejilla se queda constante.
 
 **Tiempos en Python.** Con un millón de puntos, `sorted` más recorrer tarda 1,0 s y la rejilla 2,5 s. El `sorted` de Python está escrito en C y la rejilla en Python puro, así que la constante favorece al algoritmo asintóticamente peor. Es la lección de la C1: se mide en un modelo, y la comparación justa es la de las operaciones de la Figura 4.
 

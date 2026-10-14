@@ -82,7 +82,7 @@ Como en la C3, el algoritmo es no determinista en qué proponente libre actúa, 
 | 5 | $a_0$ | $b_1$ | $a_2$ | cambia; $a_2$ queda libre |
 | 6 | $a_2$ | $b_2$ | $a_3$ | cambia; $a_3$ queda libre **y agotó su lista** |
 
-Resultado: $a_0$–$b_1$, $a_1$–$b_0$, $a_2$–$b_2$, con $a_3$ **solo**, en 6 propuestas. La enumeración de todos los emparejamientos dice que es el único estable de esta instancia. La versión "ingenua", que no cambia la condición del ciclo, revienta en el paso 7 con un `IndexError`: intenta que $a_3$ le proponga a un receptor que su lista no tiene.
+Resultado: $a_0$ con $b_1$, $a_1$ con $b_0$, $a_2$ con $b_2$, y $a_3$ **solo**, en 6 propuestas. La enumeración de todos los emparejamientos dice que es el único estable de esta instancia. La versión "ingenua", que no cambia la condición del ciclo, revienta en el paso 7 con un `IndexError`: intenta que $a_3$ le proponga a un receptor que su lista no tiene.
 
 ## 3. Invariantes y potencial
 
@@ -167,7 +167,9 @@ El resultado es de McVitie y Wilson (1970). El nombre viene de Roth (1986): un h
    Las dos cosas son imposibles. Así que los receptores emparejados en $M_0$ son un subconjunto de los emparejados en $M$.
 3. **Contar.** Cada emparejamiento tiene tantos proponentes emparejados como receptores emparejados, que es su tamaño. Por 1 y 2:
 
-$$|M| \le |M_0| \le |M|.$$
+```math
+|M| \le |M_0| \le |M|.
+```
 
 Todas son igualdades, y una inclusión entre conjuntos finitos del mismo tamaño es una igualdad. $\blacksquare$
 
@@ -177,7 +179,9 @@ Para el ejercicio, esto dice algo fuerte sobre la pregunta "¿sigue siendo estab
 
 Construir las tablas de rangos cuesta $O(\sum_b |L(b)|)$. Cada vuelta cuesta $O(1)$, y hay a lo sumo $m = \sum_a |L(a)|$ vueltas. En total:
 
-$$O\Big(|A| + |B| + \sum_a |L(a)| + \sum_b |L(b)|\Big),$$
+```math
+O\Big(|A| + |B| + \sum_a |L(a)| + \sum_b |L(b)|\Big),
+```
 
 **lineal en el tamaño de la entrada**, como en la C3. En el caso del enunciado, con receptores completos, el término $\sum_b |L(b)| = |A|\cdot|B|$ domina.
 
@@ -196,7 +200,7 @@ Con $k = 1$ el número de emparejados es la cantidad de receptores distintos ele
 
 ![Largo de las listas](figuras/ejercicio-12-largo-de-listas.png)
 
-*Figura 1. A la izquierda, la fracción de proponentes que quedan solos según el largo de sus listas. A la derecha, las propuestas contra la cota del potencial.*
+**Figura 1.** A la izquierda, la fracción de proponentes que quedan solos según el largo de sus listas. A la derecha, las propuestas contra la cota del potencial.
 
 ## 9. Dos errores, y qué pruebas los ven
 
