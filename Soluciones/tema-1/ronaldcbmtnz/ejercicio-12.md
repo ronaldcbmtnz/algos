@@ -196,7 +196,7 @@ O\Big(|A| + |B| + \sum_a |L(a)| + \sum_b |L(b)|\Big),
 | 20 | 0,004 | 194,1 | 1000 |
 | 50 | 0,000 | 204,8 | 2500 |
 
-Con $k = 1$ el número de emparejados es la cantidad de receptores distintos elegidos, porque cada receptor elegido acepta a alguno. Así que la fracción esperada de solos es $(1-1/n)^n = 0{,}364 \approx 1/e$, y se midió 0,359. Con $k$ grande las propuestas quedan muy por debajo de la cota, como las $n \ln n$ de la C3, §8, contra $n^2$.
+Con $k = 1$ el número de emparejados es la cantidad de receptores distintos elegidos, porque cada receptor elegido acepta a alguno. Así que la fracción esperada de solos es $(1-1/n)^n = 0\text{,}364 \approx 1/e$, y se midió 0,359. Con $k$ grande las propuestas quedan muy por debajo de la cota, como las $n \ln n$ de la C3, §8, contra $n^2$.
 
 ![Largo de las listas](figuras/ejercicio-12-largo-de-listas.png)
 

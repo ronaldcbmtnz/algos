@@ -18,7 +18,7 @@
 
 **Además:**
 
-- La información no alcanza: da solo $\approx 1{,}26\ n$, y hace falta el adversario, como en la C5.
+- La información no alcanza: da solo $\approx 1\text{,}26\ n$, y hace falta el adversario, como en la C5.
 - Los dos punteros son la búsqueda en escalera del ejercicio 6 sobre la matriz $A[i] - B[j]$, y el adversario es el intercalado del ejercicio 9.
 - Fuera del modelo la historia cambia: con listas desordenadas y hashing se puede hacer en $O(n)$ esperado, y con largos muy distintos gana la búsqueda exponencial.
 
@@ -84,10 +84,10 @@ En palabras: cada elemento común está o con sus dos copias ya procesadas (y en
 **Conclusión.** Al salir, $i = n$ o $j = n$, así que $A[i..n) \cap B[j..n) = \emptyset$ porque uno de los dos es vacío. Partiendo $A \cap B$ según si cada copia está procesada o no,
 
 ```math
-A \cap B = \underbrace{\big(A[0..i) \cap B[0..j)\big)}_{R \text{ por (1)}} \cup \underbrace{\big(A[0..i) \cap B[j..)\big)}_{\emptyset \text{ por (2)}} \cup \underbrace{\big(A[i..) \cap B[0..j)\big)}_{\emptyset \text{ por (3)}} \cup \underbrace{\big(A[i..) \cap B[j..)\big)}_{\emptyset},
+A \cap B = \big(A[0..i) \cap B[0..j)\big) \cup \big(A[0..i) \cap B[j..)\big) \cup \big(A[i..) \cap B[0..j)\big) \cup \big(A[i..) \cap B[j..)\big).
 ```
 
-así que $R = A \cap B$, y está en orden porque se agregó en orden creciente. $\blacksquare$
+El primer término es $R$, por (1). El segundo y el tercero son vacíos, por (2) y (3). El cuarto es vacío porque una de las dos listas ya se terminó. Así que $R = A \cap B$, y está en orden porque se agregó en orden creciente. $\blacksquare$
 
 **Terminación.** El potencial $\Phi = (n - i) + (n - j)$ es la cantidad de elementos sin procesar. Es un entero $\ge 0$, y cada vuelta lo baja en 1 o en 2. $\blacksquare$
 
@@ -114,7 +114,7 @@ Las cantidades de órdenes, 3, 13, 63, 321, son los **números de Delannoy centr
 
 ### 5.1 La información no alcanza
 
-La versión de decisión tiene **dos** salidas, así que la información da una comparación. La intersección completa tiene tantas salidas como formas de elegir qué elementos de $A$ coinciden con cuáles de $B$: $\sum_k \binom{n}{k}^2 = \binom{2n}{n}$. Con comparaciones de tres salidas eso da $\lceil\log_3\binom{2n}{n}\rceil \approx 1{,}26\ n$:
+La versión de decisión tiene **dos** salidas, así que la información da una comparación. La intersección completa tiene tantas salidas como formas de elegir qué elementos de $A$ coinciden con cuáles de $B$: $\sum_k \binom{n}{k}^2 = \binom{2n}{n}$. Con comparaciones de tres salidas eso da $\lceil\log_3\binom{2n}{n}\rceil \approx 1\text{,}26\ n$:
 
 | $n$ | información $\lceil\log_3\binom{2n}{n}\rceil$ | adversario $2n - 1$ | para comparar: información de la mezcla, $\lceil\log_2\binom{2n}{n}\rceil$ |
 |---|---|---|---|
@@ -163,7 +163,7 @@ Pero la cota del ejercicio 6 no se transfiere sola. Allá el adversario elegía 
 
 - **La cota de la mezcla no se transfiere.** Un algoritmo de intersección no tiene que producir el orden de $A \cup B$, así que la cota de la mezcla no se le aplica. Hizo falta un argumento propio, el Teorema 2. Que sobre el intercalado perfecto termine comparando todos los vecinos, y por lo tanto conociendo el orden completo, es una consecuencia de ese teorema, no una hipótesis.
 - **Cada adversario solo sirve para su problema.** Para la mezcla, igualar un par de vecinos no sirve: con $u = v$ las dos formas de ordenarlos son correctas, y no hay contradicción. Para la intersección, intercambiarlos no sirve: la intersección sigue vacía y la respuesta no cambia.
-- **La información se porta distinto.** En la mezcla, con valores distintos, hay $\binom{2n}{n}$ salidas en un árbol binario, y la información da $\lceil\log_2\binom{2n}{n}\rceil \approx 2n - \tfrac12\log_2(\pi n)$: 1995 contra 1999 con $n = 1000$ (última columna de la tabla de la sección 5.1). Casi alcanza al adversario. En la intersección la información da solo $\approx 1{,}26\ n$, y todo el resto lo pone el adversario.
+- **La información se porta distinto.** En la mezcla, con valores distintos, hay $\binom{2n}{n}$ salidas en un árbol binario, y la información da $\lceil\log_2\binom{2n}{n}\rceil \approx 2n - \tfrac12\log_2(\pi n)$: 1995 contra 1999 con $n = 1000$ (última columna de la tabla de la sección 5.1). Casi alcanza al adversario. En la intersección la información da solo $\approx 1\text{,}26\ n$, y todo el resto lo pone el adversario.
 
 ## 7. Qué escondía el modelo
 
@@ -217,5 +217,5 @@ python -m pytest test_ejercicio_14.py
 - **Problema:** intersección (o disjunción) de dos listas ordenadas de largo $n$, en el modelo de comparaciones entre las listas.
 - **Algoritmo:** dos punteros. **Correctitud:** invariante "los comunes están o los dos procesados o los dos sin procesar" y potencial "elementos sin procesar".
 - **Costo:** $\le 2n-1$ comparaciones, alcanzado en el intercalado perfecto. La fuerza bruta sobre todos los órdenes relativos confirma que es lo óptimo para $n \le 4$.
-- **Cota mínima:** el intercalado y sus $2n-1$ variantes, cada una con un par de vecinos igualado, obligan a comparar cada par: **$2n-1$, coincidencia exacta**. La información solo daba $\approx 1{,}26n$.
+- **Cota mínima:** el intercalado y sus $2n-1$ variantes, cada una con un par de vecinos igualado, obligan a comparar cada par: **$2n-1$, coincidencia exacta**. La información solo daba $\approx 1\text{,}26n$.
 - **El tema junto:** son la escalera del ejercicio 6 y el adversario de la mezcla. Fuera del modelo (hashing, listas desordenadas, largos muy distintos) la respuesta cambia, como toda cota.

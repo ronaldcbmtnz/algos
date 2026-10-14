@@ -150,12 +150,12 @@ Ninguna operación puede costar menos de una constante, así que la estructura e
 **Teorema 4.** Si una estructura de comparaciones permite `insertar` con $I(n)$ comparaciones y `extraer_minimo` con $E(n)$ comparaciones en el peor caso, entonces
 
 ```math
-I(n) + E(n) \ge \log_2 n - 1{,}443.
+I(n) + E(n) \ge \log_2 n - 1\text{,}443.
 ```
 
 En particular, no pueden ser las dos $O(1)$.
 
-*Demostración.* Insertar $n$ elementos y extraer el mínimo $n$ veces los ordena con $n\ (I(n) + E(n))$ comparaciones. Por la cota de la C5, §3, ordenar requiere $\log_2 n! \ge n\log_2 n - 1{,}443\ n$. Se divide entre $n$. $\blacksquare$
+*Demostración.* Insertar $n$ elementos y extraer el mínimo $n$ veces los ordena con $n\ (I(n) + E(n))$ comparaciones. Por la cota de la C5, §3, ordenar requiere $\log_2 n! \ge n\log_2 n - 1\text{,}443\ n$. Se divide entre $n$. $\blacksquare$
 
 Nuestra pila no lo contradice: `minimo` **consulta** el mínimo pero no lo saca, y `desapilar` saca el tope, que en general no es el mínimo. Un heap tiene `extraer_minimo` en $O(\log n)$, y el teorema dice que no se puede hacer mucho mejor.
 

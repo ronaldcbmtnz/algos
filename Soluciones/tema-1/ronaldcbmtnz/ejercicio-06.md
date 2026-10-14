@@ -74,11 +74,12 @@ Compárese con buscar binariamente en cada fila, que hace $n\lceil\log_2(n+1)\rc
 D_0 = \lbrace (i,j) : i + j = n-1\rbrace \quad (n \text{ celdas}), \qquad D_1 = \lbrace (i,j) : i + j = n\rbrace \quad (n-1 \text{ celdas}).
 ```
 
-Con $x = 2n$ definimos la matriz $M^\ast$:
+Con $x = 2n$ definimos la matriz $M^\ast$ según la antidiagonal $i + j$ de cada celda:
 
-```math
-M^\ast[i][j] = \begin{cases} 2(i+j) - 1 & \text{si } i + j < n-1 \quad (\text{todas} < x-1)\\ x - 1 & \text{si } (i,j) \in D_0\\ x + 1 & \text{si } (i,j) \in D_1\\ 2(i+j) + 1 & \text{si } i + j > n \quad (\text{todas} > x+1).\end{cases}
-```
+- $M^\ast[i][j] = 2(i+j) - 1$ si $i + j < n-1$ (todas $< x-1$);
+- $M^\ast[i][j] = x - 1$ si $(i,j) \in D_0$;
+- $M^\ast[i][j] = x + 1$ si $(i,j) \in D_1$;
+- $M^\ast[i][j] = 2(i+j) + 1$ si $i + j > n$ (todas $> x+1$).
 
 **$M^\ast$ está ordenada y no contiene a $x$.** El valor solo depende de $i + j$ y crece con $i + j$. Un paso a la derecha o hacia abajo sube $i+j$ en 1, y eso sube el valor estrictamente.
 

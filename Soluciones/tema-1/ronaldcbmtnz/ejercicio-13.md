@@ -104,7 +104,7 @@ El costo real por acceso se estabiliza cerca de 4,41, mientras la cota por acces
 - **Cota inferior.** El primer acceso solo ya cuesta $n - 1$, y cada uno de los demás al menos 1, así que el total es al menos $2n - 2$.
 - **Cota superior.** Tarjan demostró en 1985 el **teorema del acceso secuencial**: recorrer en orden todas las claves de un splay tree cuesta $O(n)$, desde **cualquier** árbol inicial. Lo citamos sin demostrarlo, como la C4 hace con la cota de Tarjan para union-find.
 
-Las mediciones dan $\approx 4{,}41\ n$ y se ve de dónde sale. Los primeros accesos cuestan $n-1,\ n/2,\ n/4,\ n/8, \dots$, porque cada splay deja el fondo del árbol a la mitad de profundidad, como explica la C4, §6. Con $n = 2^{14}$ son 16383, 8192, 4097, 2048, 1027, 513, …, y los primeros 14 suman 32 790, casi exactamente $2n$. El resto de la pasada cuesta unas 2,4 rotaciones por acceso.
+Las mediciones dan $\approx 4\text{,}41\ n$ y se ve de dónde sale. Los primeros accesos cuestan $n-1,\ n/2,\ n/4,\ n/8, \dots$, porque cada splay deja el fondo del árbol a la mitad de profundidad, como explica la C4, §6. Con $n = 2^{14}$ son 16383, 8192, 4097, 2048, 1027, 513, …, y los primeros 14 suman 32 790, casi exactamente $2n$. El resto de la pasada cuesta unas 2,4 rotaciones por acceso.
 
 **Dónde está la holgura.** Medimos el potencial en cada acceso:
 
@@ -136,7 +136,7 @@ Y ningún árbol binario de búsqueda puede hacerlo mejor en ese caso. Un árbol
 
 ![Rotaciones por acceso](figuras/ejercicio-13-por-acceso.png)
 
-**Figura 2.** Rotaciones por acceso. En orden (azul) es plano en $\approx 4{,}4$. Al azar (naranja) crece como $\log n$. La cota del lema más la §5 (gris) crece como $4\log_2 n$.
+**Figura 2.** Rotaciones por acceso. En orden (azul) es plano en $\approx 4\text{,}4$. Al azar (naranja) crece como $\log n$. La cota del lema más la §5 (gris) crece como $4\log_2 n$.
 
 **Comparación con subir a la raíz.** La C4, §6 midió $n/2$ rotaciones por acceso para subir a la raíz, que es $\Theta(n^2)$ en total (ejercicio 4 de la C4). Ahí ni siquiera vale el lema, porque su demostración necesita que el zig-zig rote primero el padre. Splay está a un factor $\log n$ de su cota y subir a la raíz a un factor $n$ del splay.
 

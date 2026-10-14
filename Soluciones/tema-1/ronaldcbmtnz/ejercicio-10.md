@@ -58,13 +58,13 @@ La herramienta de la C5, §3, cuenta respuestas posibles. Distinción de element
 
 ### 3.2 La cota en árboles lineales, demostrada entera
 
-**Lema (las hojas de un árbol lineal son convexas).** El conjunto $R_\ell \subseteq \mathbb R^n$ de las entradas que llegan a una hoja $\ell$ es convexo.
+**Lema (las hojas de un árbol lineal son convexas).** El conjunto $R_\ell \subseteq ℝ^n$ de las entradas que llegan a una hoja $\ell$ es convexo.
 
 *Demostración.* Una entrada llega a $\ell$ si y solo si cada prueba del camino de la raíz a $\ell$ le da el signo de ese camino. Cada condición $f(x) < 0$, $f(x) = 0$ o $f(x) > 0$, con $f$ afín, define un semiespacio abierto o un hiperplano, y los dos son convexos. $R_\ell$ es la intersección de esos conjuntos, y una intersección de convexos es convexa. $\blacksquare$
 
 **Teorema 3 (distinción de elementos en árboles lineales).** Todo árbol de decisión lineal que decide si $n$ números son todos distintos tiene profundidad al menos $\lceil\log_3 n!\rceil$.
 
-*Demostración.* Para cada permutación $\pi$ de $\lbrace 1,\dots,n\rbrace$ sea $p^\pi \in \mathbb R^n$ la entrada con $p^\pi_i = \pi(i)$. Sus coordenadas son distintas, así que el árbol tiene que responder "todos distintos". Vamos a ver que dos permutaciones distintas $\pi \ne \sigma$ llegan a hojas distintas.
+*Demostración.* Para cada permutación $\pi$ de $\lbrace 1,\dots,n\rbrace$ sea $p^\pi \in ℝ^n$ la entrada con $p^\pi_i = \pi(i)$. Sus coordenadas son distintas, así que el árbol tiene que responder "todos distintos". Vamos a ver que dos permutaciones distintas $\pi \ne \sigma$ llegan a hojas distintas.
 
 Supongamos que $p = p^\pi$ y $q = p^\sigma$ llegan a la misma hoja $\ell$. Como $\pi \ne \sigma$, hay dos índices $i, j$ que quedan en orden distinto: $p_i < p_j$ y $q_i > q_j$. La función
 
@@ -78,12 +78,12 @@ Así que las $n!$ entradas $p^\pi$ llegan a $n!$ hojas distintas. Un árbol tern
 
 ![Las seis cámaras para n = 3](figuras/ejercicio-10-camaras.png)
 
-**Figura 1.** Con $n=3$, cortando $\mathbb R^3$ con el plano $x_1+x_2+x_3=0$. Los planos $x_i = x_j$ separan las $3! = 6$ regiones donde la entrada tiene un orden fijo. Cualquier segmento entre dos órdenes distintos cruza un plano de repetidos. Si una hoja convexa contuviera a $p$ y a $q$, contendría al punto rojo $z$.
+**Figura 1.** Con $n=3$, cortando $ℝ^3$ con el plano $x_1+x_2+x_3=0$. Los planos $x_i = x_j$ separan las $3! = 6$ regiones donde la entrada tiene un orden fijo. Cualquier segmento entre dos órdenes distintos cruza un plano de repetidos. Si una hoja convexa contuviera a $p$ y a $q$, contendría al punto rojo $z$.
 
-Con la cota de la C5 (Lema 3), $\log_2 n! \ge n\log_2 n - 1{,}443\ n$, y dividiendo entre $\log_2 3$:
+Con la cota de la C5 (Lema 3), $\log_2 n! \ge n\log_2 n - 1\text{,}443\ n$, y dividiendo entre $\log_2 3$:
 
 ```math
-\lceil\log_3 n!\rceil \;\ge\; \frac{n\log_2 n - 1{,}443\,n}{\log_2 3} = \Omega(n\log n).
+\lceil\log_3 n!\rceil \;\ge\; \frac{n\log_2 n - 1\text{,}443\,n}{\log_2 3} = \Omega(n\log n).
 ```
 
 Este argumento es de Dobkin y Lipton (1979). Lo demostramos entero porque no usa nada fuera del curso.
@@ -121,7 +121,7 @@ $B$ es correcto y tiene profundidad $T(n)+1$. La prueba agregada tiene grado 1, 
 
 **Variantes del enunciado.** Si el árbol devuelve la distancia en lugar del par, cada hoja tiene que dar una expresión como $x_i - x_j$, y se agrega la misma prueba. Si es la versión de decisión "¿es $\delta \le t$?", con $t = 0$ es exactamente distinción de elementos.
 
-**Conclusión del ciclo.** En árboles algebraicos ordenar y recorrer es óptimo: $\Theta(n\log n)$. En árboles lineales la cota y el algoritmo coinciden salvo la constante del término principal. El algoritmo hace unas $n\log_2 n$ pruebas y la cota es $n\log_2 n/\log_2 3$, así que el cociente tiende a $\log_2 3 \approx 1{,}585$. Medido con entradas al azar:
+**Conclusión del ciclo.** En árboles algebraicos ordenar y recorrer es óptimo: $\Theta(n\log n)$. En árboles lineales la cota y el algoritmo coinciden salvo la constante del término principal. El algoritmo hace unas $n\log_2 n$ pruebas y la cota es $n\log_2 n/\log_2 3$, así que el cociente tiende a $\log_2 3 \approx 1\text{,}585$. Medido con entradas al azar:
 
 | $n$ | cota $\lceil\log_3 n!\rceil - 1$ | pruebas del algoritmo | cociente |
 |---|---|---|---|
@@ -217,7 +217,7 @@ El código de prueba vigila los dos invariantes después de cada inserción en 4
 **Teorema 9 (costo esperado).** Para **toda** entrada, con el orden de inserción uniforme al azar:
 
 ```math
-\mathbb E[\text{reconstrucciones}] \le 2H_n - 3, \qquad \mathbb E[\text{puntos reinsertados}] \le 2(n-2),
+\mathrm{E}[\text{reconstrucciones}] \le 2H_n - 3, \qquad \mathrm{E}[\text{puntos reinsertados}] \le 2(n-2),
 ```
 
 con igualdad cuando cada subconjunto tiene un único par más cercano (por ejemplo, si todas las distancias son distintas). Aquí $H_n = 1 + \frac12 + \dots + \frac1n$. El costo esperado total es $O(n)$.
@@ -236,12 +236,12 @@ En los dos casos, a lo sumo 2 puntos de $S_m$ provocan la reconstrucción. Como 
 con igualdad cuando el par más cercano de $S_m$ es único. Por linealidad de la esperanza:
 
 ```math
-\mathbb E[\text{reconstrucciones}] \le \sum_{m=3}^{n}\frac2m = 2H_n - 3, \qquad \mathbb E[\text{reinserciones}] \le \sum_{m=3}^{n}\frac2m\cdot m = 2(n-2).
+\mathrm{E}[\text{reconstrucciones}] \le \sum_{m=3}^{n}\frac2m = 2H_n - 3, \qquad \mathrm{E}[\text{reinserciones}] \le \sum_{m=3}^{n}\frac2m\cdot m = 2(n-2).
 ```
 
 Cada inserción hace 3 consultas y a lo sumo una escritura. El total esperado de accesos a la tabla es a lo sumo $3(n-2) + (n-2) + 2(n-2) + 2 \approx 6n$, que es $O(n)$. $\blacksquare$
 
-Este análisis afina un poco el de la conferencia, por dos lados. Primero, cubre los empates: la conferencia supone que el par es único, y con empates la probabilidad solo puede bajar. Segundo, da la constante exacta. Como $H_n = \ln n + \gamma + O(1/n)$, la esperanza es $2\ln n + 2\gamma - 3 \approx 2\ln n - 1{,}85$, así que la aproximación $2\ln n$ de la conferencia sobrestima en casi 2. Ese ajuste vale igual en el plano, donde el análisis es el mismo. El 13,3 que mide la C2 para $n = 1000$ con tres semillas es compatible con el valor exacto 11,97, porque con tres corridas el error estándar es de unas 2 reconstrucciones.
+Este análisis afina un poco el de la conferencia, por dos lados. Primero, cubre los empates: la conferencia supone que el par es único, y con empates la probabilidad solo puede bajar. Segundo, da la constante exacta. Como $H_n = \ln n + \gamma + O(1/n)$, la esperanza es $2\ln n + 2\gamma - 3 \approx 2\ln n - 1\text{,}85$, así que la aproximación $2\ln n$ de la conferencia sobrestima en casi 2. Ese ajuste vale igual en el plano, donde el análisis es el mismo. El 13,3 que mide la C2 para $n = 1000$ con tres semillas es compatible con el valor exacto 11,97, porque con tres corridas el error estándar es de unas 2 reconstrucciones.
 
 **El peor caso sin barajar es $\Theta(n^2)$.** Sea $x_1 = 0$ y $x_{k+1} = x_k + (n-k)$: los huecos, en orden de inserción, son $n-1, n-2, \dots, 1$. Al insertar el punto $k+1$, el hueco nuevo es menor que todos los anteriores, así que $\delta$ baja en cada paso. Hay $n-2$ reconstrucciones y $\sum_{m=3}^{n} m = \frac{n(n+1)}{2} - 3$ reinserciones. Barajando, la misma entrada vuelve a $2H_n - 3$ en promedio:
 

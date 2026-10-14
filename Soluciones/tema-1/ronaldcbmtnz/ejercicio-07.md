@@ -68,9 +68,8 @@ Una forma de verlo es en la matriz de signos de $A[i] - B[j]$. Si se invierten l
 
 **Teorema 3.** Sea $s$ el primer índice con $q(s)$ falso ($s = 2n - 1$ si son todos verdaderos). Entonces la mediana es
 
-```math
-\begin{cases} A\big[(s-1)/2\big] & \text{si } s \text{ es impar},\\ B\big[n - 1 - s/2\big] & \text{si } s \text{ es par}.\end{cases}
-```
+- $A\big[(s-1)/2\big]$ si $s$ es impar;
+- $B\big[n - 1 - s/2\big]$ si $s$ es par.
 
 *Demostración.* Las posiciones pares son $q(2i) = \lnot g(i)$, así que $i^\ast$ es el primer $i$ con $q(2i)$ falso.
 

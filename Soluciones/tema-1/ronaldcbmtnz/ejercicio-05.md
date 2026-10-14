@@ -97,9 +97,8 @@ Una traza con $\mu = 4$, $\lambda = 7$, la de la Figura 1:
 
 **Con ciclo (caso b).** Definimos
 
-```math
-\Phi_t = \begin{cases} (\mu - t) + \lambda & \text{si } t < \mu \quad\text{(la tortuga todavía está en la cola)},\\ r_t \in \lbrace 1, \dots, \lambda\rbrace,\ \ r_t \equiv -t \pmod\lambda & \text{si } t \ge \mu \quad\text{(las dos están en el ciclo)}.\end{cases}
-```
+- $\Phi_t = (\mu - t) + \lambda$ si $t < \mu$, cuando la tortuga todavía está en la cola;
+- $\Phi_t = r_t$ si $t \ge \mu$, cuando las dos están en el ciclo, donde $r_t$ es el único valor de $\lbrace 1, \dots, \lambda\rbrace$ con $r_t \equiv -t \pmod\lambda$.
 
 En la segunda fase, $r_t$ es la **distancia que la liebre tiene que recorrer para alcanzar a la tortuga**. La liebre está en $x_{2t}$, y avanzando $d$ nodos llega a $x_{2t+d}$, que es la tortuga $x_t$ cuando $2t + d \equiv t$, o sea $d \equiv -t \pmod\lambda$.
 

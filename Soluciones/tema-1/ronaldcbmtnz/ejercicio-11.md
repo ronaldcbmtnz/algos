@@ -18,11 +18,10 @@
 
 **Modelo.** Word RAM (C1, §9). En las secciones 1 a 3 suponemos que los pesos, los valores y sus sumas caben en una palabra. La sección 3 dice qué cambia si no caben.
 
-**Algoritmo.** Se llena una tabla $D$ de $n+1$ filas y $W+1$ columnas:
+**Algoritmo.** Se llena una tabla $D$ de $n+1$ filas y $W+1$ columnas, con $D[0][c] = 0$ y, para $i \ge 1$:
 
-```math
-D[0][c] = 0, \qquad D[i][c] = \begin{cases} \max\big(D[i-1][c],\ v_i + D[i-1][c-w_i]\big) & \text{si } w_i \le c,\\ D[i-1][c] & \text{si } w_i > c. \end{cases}
-```
+- $D[i][c] = \max\big(D[i-1][c],\ v_i + D[i-1][c-w_i]\big)$ si $w_i \le c$;
+- $D[i][c] = D[i-1][c]$ si $w_i > c$.
 
 La respuesta es $D[n][W]$. Para recuperar el conjunto se recorre la tabla hacia atrás desde $(n, W)$: si $D[i][c] \ne D[i-1][c]$, el objeto $i$ está en la solución y se sigue en $(i-1, c-w_i)$; si no, se sigue en $(i-1, c)$.
 
@@ -111,23 +110,23 @@ El punto clave está en la definición: **$n$ cuenta cosas y $W$ es un valor**. 
 
 | familia | $b$ | $s$ | celdas | $\log_2(\text{celdas})/s$ |
 |---|---|---|---|---|
-| $I_b$: un objeto, los bits en $W$ | 16 | 19 | $6{,}55\cdot10^{4}$ | 0,842 |
-| | 64 | 67 | $1{,}84\cdot10^{19}$ | 0,955 |
-| $J_b$: dos objetos | 16 | 53 | $1{,}31\cdot10^{5}$ | 0,321 |
-| | 64 | 197 | $3{,}69\cdot10^{19}$ | 0,330 |
-| ocho objetos de $b$ bits | 16 | 278 | $1{,}79\cdot10^{6}$ | 0,075 |
-| | 64 | 1094 | $2{,}95\cdot10^{20}$ | 0,062 |
+| $I_b$: un objeto, los bits en $W$ | 16 | 19 | $6\text{,}55\cdot10^{4}$ | 0,842 |
+| | 64 | 67 | $1\text{,}84\cdot10^{19}$ | 0,955 |
+| $J_b$: dos objetos | 16 | 53 | $1\text{,}31\cdot10^{5}$ | 0,321 |
+| | 64 | 197 | $3\text{,}69\cdot10^{19}$ | 0,330 |
+| ocho objetos de $b$ bits | 16 | 278 | $1\text{,}79\cdot10^{6}$ | 0,075 |
+| | 64 | 1094 | $2\text{,}95\cdot10^{20}$ | 0,062 |
 
 **Mismo tamaño, distinto reparto.** El costo no es función de $s$ sola: depende de dónde están los bits. Con $s \approx 512$ bits repartidos entre $n$ objetos con pesos y valores de $b$ bits, y $W$ igual a la mitad del peso total, a $10^9$ celdas por segundo:
 
 | objetos $n$ | bits por número $b$ | $s$ | celdas | tiempo |
 |---|---|---|---|---|
-| 1 | 170 | 510 | $3{,}7\cdot10^{50}$ | $1{,}2\cdot10^{34}$ años |
-| 2 | 102 | 512 | $5{,}1\cdot10^{30}$ | $1{,}6\cdot10^{14}$ años |
-| 4 | 56 | 508 | $2{,}9\cdot10^{17}$ | 9,1 años |
-| 8 | 29 | 499 | $1{,}3\cdot10^{10}$ | 12,8 s |
-| 16 | 15 | 503 | $3{,}2\cdot10^{6}$ | 3,2 ms |
-| 32 | 7 | 465 | $4{,}9\cdot10^{4}$ | 49 µs |
+| 1 | 170 | 510 | $3\text{,}7\cdot10^{50}$ | $1\text{,}2\cdot10^{34}$ años |
+| 2 | 102 | 512 | $5\text{,}1\cdot10^{30}$ | $1\text{,}6\cdot10^{14}$ años |
+| 4 | 56 | 508 | $2\text{,}9\cdot10^{17}$ | 9,1 años |
+| 8 | 29 | 499 | $1\text{,}3\cdot10^{10}$ | 12,8 s |
+| 16 | 15 | 503 | $3\text{,}2\cdot10^{6}$ | 3,2 ms |
+| 32 | 7 | 465 | $4\text{,}9\cdot10^{4}$ | 49 µs |
 
 Los bits que se gastan en *más objetos* cuestan polinomialmente, y los que se gastan en *números más grandes* cuestan exponencialmente.
 
@@ -150,15 +149,15 @@ La tabla de la C1, §8, rehecha para la mochila con $n = 100$ objetos y capacida
 
 | bits de $W$ | celdas | tiempo | memoria (una fila) | memoria (tabla) | primalidad, $b$ bits |
 |---|---|---|---|---|---|
-| 16 | $6{,}6\cdot10^{6}$ | 6,6 ms | 524 KB | 53 MB | 0,26 µs |
-| 32 | $4{,}3\cdot10^{11}$ | 7,2 min | 34 GB | 3,5 TB | 66 µs |
-| 48 | $2{,}8\cdot10^{16}$ | 0,89 años | 2,3 PB | 227 PB | 17 ms |
-| 64 | $1{,}8\cdot10^{21}$ | 58 500 años | 148 EB | 15 ZB | 4,3 s |
-| 128 | $3{,}4\cdot10^{40}$ | $1{,}1\cdot10^{24}$ años | — | — | 585 años |
+| 16 | $6\text{,}6\cdot10^{6}$ | 6,6 ms | 524 KB | 53 MB | 0,26 µs |
+| 32 | $4\text{,}3\cdot10^{11}$ | 7,2 min | 34 GB | 3,5 TB | 66 µs |
+| 48 | $2\text{,}8\cdot10^{16}$ | 0,89 años | 2,3 PB | 227 PB | 17 ms |
+| 64 | $1\text{,}8\cdot10^{21}$ | 58 500 años | 148 EB | 15 ZB | 4,3 s |
+| 128 | $3\text{,}4\cdot10^{40}$ | $1\text{,}1\cdot10^{24}$ años | — | — | 585 años |
 
 Con 32 bits el tiempo todavía se aguanta (siete minutos), pero la tabla completa pide 3,5 TB. Como dice la C1, §6, la memoria se acaba antes que la paciencia. Con 64 bits, que es el tamaño de un `long` cualquiera, no hay nada que hacer.
 
-**Medido en una computadora real.** La Figura 2 mide el tiempo de la mochila (20 objetos con pesos y valores de $b$ bits, una sola fila en numpy) y el de la primalidad por división (el mayor primo de $b$ bits). Las pendientes ajustadas son $\times 2{,}14$ por bit para la mochila y $\times 1{,}43 \approx \sqrt 2$ por bit para la primalidad. La de la mochila se ajusta desde $b = 15$, cuando la fila ya no cabe en la caché (ver más abajo). En cinco corridas quedó entre $\times 2{,}05$ y $\times 2{,}14$, y la de la primalidad entre $\times 1{,}42$ y $\times 1{,}43$. Es lo que predicen $n\ 2^b$ y $2^{b/2}$. La mochila queda un poco por encima de 2 porque el tiempo por celda todavía sube algo al crecer la fila: de 1,8 a 2,4 ns entre 1,25 MB y 8 MB, en la tabla de más abajo.
+**Medido en una computadora real.** La Figura 2 mide el tiempo de la mochila (20 objetos con pesos y valores de $b$ bits, una sola fila en numpy) y el de la primalidad por división (el mayor primo de $b$ bits). Las pendientes ajustadas son $\times 2\text{,}14$ por bit para la mochila y $\times 1\text{,}43 \approx \sqrt 2$ por bit para la primalidad. La de la mochila se ajusta desde $b = 15$, cuando la fila ya no cabe en la caché (ver más abajo). En cinco corridas quedó entre $\times 2\text{,}05$ y $\times 2\text{,}14$, y la de la primalidad entre $\times 1\text{,}42$ y $\times 1\text{,}43$. Es lo que predicen $n\ 2^b$ y $2^{b/2}$. La mochila queda un poco por encima de 2 porque el tiempo por celda todavía sube algo al crecer la fila: de 1,8 a 2,4 ns entre 1,25 MB y 8 MB, en la tabla de más abajo.
 
 ![Tiempos medidos](figuras/ejercicio-11-tiempos.png)
 
@@ -214,7 +213,7 @@ Los dos tipos saltan en el mismo lugar, entre 1 MB y 1,25 MB, aunque con int32 e
 
 ## 7. Verificación: código y pruebas
 
-- [`codigo/ejercicio_11.py`](codigo/ejercicio_11.py) implementa la programación dinámica con contador de celdas, una versión con numpy para medir tiempos (con enteros de 64 o de 32 bits, para el experimento de la caché), la fuerza bruta, el tamaño en bits y en unario, las tres familias de instancias, la primalidad de la conferencia y un Miller-Rabin determinista para $N < 3{,}3\cdot10^{24}$. Imprime todas las tablas de este informe y genera las figuras.
+- [`codigo/ejercicio_11.py`](codigo/ejercicio_11.py) implementa la programación dinámica con contador de celdas, una versión con numpy para medir tiempos (con enteros de 64 o de 32 bits, para el experimento de la caché), la fuerza bruta, el tamaño en bits y en unario, las tres familias de instancias, la primalidad de la conferencia y un Miller-Rabin determinista para $N < 3\text{,}3\cdot10^{24}$. Imprime todas las tablas de este informe y genera las figuras.
 - [`codigo/test_ejercicio_11.py`](codigo/test_ejercicio_11.py) tiene 15 pruebas:
 
 | prueba | qué comprueba |
